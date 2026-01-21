@@ -1,13 +1,13 @@
 "use client";
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Instagram, Linkedin, Twitter } from "lucide-react";
-import Link from "next/link";
 import Projects from "../components/Projects"; 
+import TechTicker from "../components/TechTicker"; // <--- NEW
+import Methodology from "../components/Methodology"; // <--- NEW
 
 export default function Home() {
   
-  // --- GEO DATA (Structured Data for AI) ---
-  // This helps ChatGPT/Google understand your business entity
+  // GEO DATA
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
@@ -26,7 +26,7 @@ export default function Home() {
   return (
     <div className="bg-zinc-950 min-h-screen text-white selection:bg-white selection:text-black">
       
-      {/* INJECT GEO DATA FOR AI */}
+      {/* INJECT GEO DATA */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
@@ -64,7 +64,7 @@ export default function Home() {
               BUILDING
             </span>
             <span className="block text-zinc-800">
-              LEGACY.
+              LEGACY
             </span>
           </h1>
 
@@ -78,7 +78,6 @@ export default function Home() {
             We engineer the standard of excellence.
           </motion.p>
 
-          {/* Call to Action */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -95,38 +94,16 @@ export default function Home() {
             </a>
           </motion.div>
         </motion.div>
-
-        {/* Scroll Indicator */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
-          className="absolute bottom-12 animate-bounce text-zinc-600 hidden md:block"
-        >
-          <ArrowDown size={24} />
-        </motion.div>
       </main>
+
+      {/* --- NEW: THE INFINITE TICKER --- */}
+      <TechTicker />
 
       {/* --- PROJECTS SECTION --- */}
       <Projects />
 
-      {/* --- FOOTER --- */}
-      <footer className="border-t border-white/10 bg-black pt-20 pb-32 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-8">
-          <div>
-            <h2 className="text-2xl font-bold tracking-tight text-white">TALORMAYDE</h2>
-            <p className="text-zinc-500 text-sm mt-2">© 2025 All Rights Reserved.</p>
-          </div>
-          
-          <div className="flex gap-6">
-            {[Github, Twitter, Instagram, Linkedin].map((Icon, i) => (
-              <a key={i} href="#" className="text-zinc-500 hover:text-white transition-colors">
-                <Icon size={20} />
-              </a>
-            ))}
-          </div>
-        </div>
-      </footer>
+      {/* --- NEW: THE METHODOLOGY --- */}
+      <Methodology />
       
     </div>
   );

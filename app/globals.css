@@ -1,11 +1,13 @@
 @import "tailwindcss";
 
-/* 1. Put the smooth scroll rule right here */
+/* 1. Global Html Rules */
 html {
   scroll-behavior: smooth;
+  scrollbar-width: thin; /* Firefox Support */
+  scrollbar-color: #27272a #09090b; /* Firefox Support */
 }
 
-/* 2. Keep the theme configuration */
+/* 2. Theme Configuration */
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -13,7 +15,7 @@ html {
   --font-mono: var(--font-geist-mono);
 }
 
-/* 3. Keep your standard CSS variables */
+/* 3. CSS Variables */
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -31,7 +33,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
-/* --- CINEMATIC SCROLLBAR --- */
+
+/* --- BRANDING: EMERALD HIGHLIGHT --- */
+/* This makes selected text turn green instead of blue */
+::selection {
+  background-color: #10b981; /* Emerald-500 */
+  color: #000000;
+}
+
+/* --- CINEMATIC SCROLLBAR (Chrome/Safari/Edge) --- */
 ::-webkit-scrollbar {
   width: 10px;
 }
@@ -48,12 +58,6 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #52525b; /* Zinc-600 */
-}
-
-/* Firefox Support */
-html {
-  scrollbar-width: thin;
-  scrollbar-color: #27272a #09090b;
 }
 
 /* --- UTILITIES --- */

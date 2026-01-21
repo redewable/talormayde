@@ -1,7 +1,9 @@
 "use client";
 import { motion } from "framer-motion";
-import { Camera, Zap, Globe, TrendingUp, Cpu, Layers } from "lucide-react";
+import { Camera, Zap, Globe, TrendingUp } from "lucide-react";
 import Link from "next/link";
+import Packages from "@/components/Packages";
+import FAQ from "@/components/FAQ";
 
 const capabilities = [
   {
@@ -59,7 +61,7 @@ export default function Services() {
         >
           FULL STACK <br />
           <span className="text-transparent bg-clip-text bg-gradient-to-b from-zinc-200 to-zinc-800">
-            DOMINANCE.
+            DOMINANCE
           </span>
         </motion.h1>
         <motion.p 
@@ -104,27 +106,12 @@ export default function Services() {
         ))}
       </div>
 
-      {/* The "Tech Stack" Footer (Subtle Flex) */}
-      <motion.div 
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        className="max-w-4xl mx-auto border-t border-white/5 pt-16 text-center"
-      >
-        <p className="text-zinc-600 mb-8 font-mono text-sm">POWERED BY MODERN INFRASTRUCTURE</p>
-        <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
-          {["Next.js", "Vercel", "Firebase", "React", "Motion", "Tailwind"].map((tech) => (
-            <span key={tech} className="text-xl font-bold text-zinc-400">{tech}</span>
-          ))}
-        </div>
-      </motion.div>
+      {/* --- NEW: PACKAGES SECTION --- */}
+      <Packages />
 
-       {/* CTA */}
-       <div className="mt-32 text-center">
-         <p className="text-zinc-500 mb-4">Ready to scale?</p>
-         <Link href="mailto:talormayde@gmail.com" className="inline-block border border-white/20 px-8 py-4 rounded-full text-white hover:bg-white hover:text-black transition-all font-bold tracking-wide">
-           INITIATE PROJECT
-         </Link>
-       </div>
+      {/* --- NEW: FAQ SECTION --- */}
+      <FAQ />
+
     </div>
   );
 }
