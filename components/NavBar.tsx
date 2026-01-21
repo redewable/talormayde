@@ -20,45 +20,57 @@ export default function NavBar() {
 
   return (
     <>
-      {/* Studio Mark */}
-      <div className="fixed top-8 left-8 z-50">
+      {/* BRAND MARK - TOP LEFT */}
+      <div className="absolute top-8 left-8 z-50">
         <Link href="/">
+            {/* CRITICAL FIX: 
+               We removed ALL "invert" or "brightness" classes from Tailwind.
+               We rely 100% on the "adaptive-logo" CSS class to handle the flip.
+            */}
             <img 
                 src="/talormayde.png" 
                 alt="talormayde" 
-                className="brand-logo w-32 h-auto opacity-90 hover:opacity-100"
+                className="adaptive-logo w-32 h-auto opacity-90 hover:opacity-100 transition-opacity" 
             />
         </Link>
       </div>
 
-      {/* Floating Dock */}
+      {/* FLOATING DOCK */}
       <div className="fixed bottom-6 left-0 right-0 flex justify-center z-50 pointer-events-auto px-6">
         <motion.nav
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="flex items-center gap-1 bg-background/80 dark:bg-background/80 light:bg-white/90 backdrop-blur-xl px-4 py-2 rounded-full border border-white/10 dark:border-white/10 light:border-black/5 shadow-2xl"
+          className="flex items-center gap-1 bg-glass backdrop-blur-xl px-4 py-2 rounded-full border border-border-subtle shadow-2xl"
         >
           {navItems.map((item) => {
             const isActive = pathname === item.path;
             const Icon = item.icon;
+            
             return (
               <Link
                 key={item.name}
                 href={item.path}
                 className={`relative p-3 rounded-full transition-colors group ${
-                  isActive ? "text-foreground dark:text-foreground light:text-black" : "text-muted-foreground hover:text-zinc-200"
+                  isActive 
+                    ? "text-foreground" // Active: Black (Light) / White (Dark)
+                    : "text-muted-foreground hover:text-foreground" // Inactive: Gray -> Color
                 }`}
               >
                 {isActive && (
-                  <motion.div layoutId="nav-pill" className="absolute inset-0 bg-white/10 dark:bg-white/10 light:bg-background/5 rounded-full -z-10" />
+                  <motion.div 
+                    layoutId="nav-pill" 
+                    className="absolute inset-0 bg-foreground/10 rounded-full -z-10" 
+                  />
                 )}
                 <Icon size={18} />
               </Link>
             );
           })}
 
-          {/* Divider and Toggle */}
-          <div className="w-[1px] h-4 bg-white/10 dark:bg-white/10 light:bg-background/10 mx-2" />
+          {/* Vertical Divider */}
+          <div className="w-[1px] h-4 bg-border-subtle mx-2" />
+          
+          {/* Theme Toggle */}
           <ThemeToggle />
         </motion.nav>
       </div>

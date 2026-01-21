@@ -1,103 +1,104 @@
 "use client";
 import { motion } from "framer-motion";
-import { ArrowRight, PenTool, Move, Maximize2, Palette, ChevronRight } from "lucide-react";
+import { ArrowRight, PenTool, Move, Maximize2, Palette, Code2, Layers } from "lucide-react";
 import Link from "next/link";
 import Projects from "@/components/Projects"; 
 import LivingCanvas from "@/components/LivingCanvas";
 
 export default function Home() {
   return (
-    <div className="bg-background text-foreground min-h-screen font-sans selection:bg-emerald-500 selection:text-white overflow-x-hidden transition-colors duration-500">
+    <div className="bg-background text-foreground min-h-screen font-sans overflow-x-hidden">
       
       {/* SECTION 1: HERO */}
-      <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden">
+      <section className="relative min-h-[90vh] flex flex-col items-center justify-center overflow-hidden">
         <LivingCanvas />
-        <div className="relative z-20 text-center space-y-12 px-6 max-w-5xl mx-auto">
-          {/* LOGO: Same fix here - Invert in light mode to turn the white logo black */}
-          <div className="mx-auto w-32 md:w-48 opacity-90 invert dark:invert-0 transition-all">
-             <img src="/talormayde-logo.png" alt="Talormayde" className="w-full h-auto drop-shadow-2xl" />
+        <div className="relative z-20 text-center space-y-8 px-6 max-w-5xl mx-auto">
+          
+          <div className="mx-auto w-32 md:w-48 opacity-90 hover:opacity-100 transition-opacity">
+            <img 
+              src="/talormayde-logo.png" 
+              alt="Talormayde" 
+              /* Cleaned class list */
+              className="adaptive-logo w-full h-auto drop-shadow-2xl" 
+            />
           </div>
           
-          <div className="space-y-6">
-            {/* Removed mix-blend-overlay to fix visibility issues */}
-            <h1 className="text-5xl md:text-8xl font-light tracking-tight text-foreground leading-none">
+          <div className="space-y-4">
+            <h1 className="text-5xl md:text-8xl font-light tracking-tight text-foreground leading-none mix-blend-overlay">
               UNLIMITED <br className="md:hidden" /> POTENTIAL
             </h1>
             <p className="text-muted-foreground text-xs md:text-sm font-mono tracking-[0.3em] uppercase leading-loose">
               Created to Create.
             </p>
           </div>
-          <div className="pt-12">
-            <Link href="/contact" className="group relative inline-flex items-center gap-3 px-10 py-5 border border-border-subtle rounded-full hover:bg-foreground/5 transition-all hover:scale-105">
+
+          <div className="pt-8">
+            <Link href="/contact" className="group relative inline-flex items-center gap-3 px-8 py-4 border border-border-subtle rounded-full hover:bg-foreground hover:text-background transition-all bg-background/50 backdrop-blur-sm">
                 <span className="text-[10px] tracking-[0.3em] uppercase font-bold">Begin The Work</span>
-                <ArrowRight size={14} className="text-muted-foreground group-hover:text-foreground transition-colors"/>
+                <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform"/>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* SECTION 2: MANIFESTO */}
-      <section className="py-40 px-6 bg-transparent relative z-10 border-t border-border-subtle">
-        <div className="max-w-3xl mx-auto text-center space-y-12">
-            <div className="w-[1px] h-24 bg-gradient-to-b from-transparent via-border-subtle to-transparent mx-auto" />
-            <h2 className="text-2xl md:text-4xl font-light leading-relaxed">
+      {/* SECTION 2: MANIFESTO - TIGHTENED (py-12) */}
+      <section className="py-12 px-6 bg-transparent relative z-10 border-t border-border-subtle">
+        <div className="max-w-3xl mx-auto text-center space-y-8">
+            <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-border-subtle to-transparent mx-auto" />
+            <h2 className="text-2xl md:text-3xl font-light leading-relaxed">
                 &quot;I am not a painter, so I paint.<br/>
                 I am not a coder, so I code.<br/>
                 We think, speak, and do <span className="border-b border-foreground/20 pb-1">outside of the box</span>.&quot;
             </h2>
-            <p className="text-muted-foreground text-[10px] font-mono uppercase tracking-[0.3em] leading-loose">
-                The Lord has given us this canvas.<br/>It is up to us to determine its value.
-            </p>
         </div>
       </section>
 
+      {/* SECTION 3: PROJECTS */}
       <Projects />
 
-      {/* SECTION 4: THE MEDIUM - UPDATED DESIGN */}
-      <section className="py-40 px-6 bg-transparent border-t border-border-subtle relative z-10">
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24">
-            <div>
-                <h2 className="text-4xl md:text-6xl font-light mb-8 tracking-tight sticky top-32">THE MEDIUM</h2>
-                <p className="text-muted-foreground text-lg font-light leading-relaxed max-w-md sticky top-52">
-                   We believe the impossible is possible. We use technology not as a utility, but as an art form. 
-                   Every pixel is placed with intention.
+      {/* SECTION 4: THE MEDIUM - BENTO GRID */}
+      <section className="py-24 px-6 bg-transparent border-t border-border-subtle relative z-10">
+        <div className="max-w-7xl mx-auto">
+            <div className="mb-12">
+                <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-4">THE MEDIUM</h2>
+                <p className="text-muted-foreground text-lg font-light max-w-md">
+                   We treat code like poetry and pixels like paint.
                 </p>
             </div>
             
-            <div className="grid grid-cols-1">
+            {/* SPRUCED UP GRID */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
                 {[
-                    { icon: Palette, title: "Art Direction", desc: "Defining the visual soul of the brand." },
-                    { icon: PenTool, title: "Digital Craftsmanship", desc: "Bespoke development, hand-coded for precision." },
-                    { icon: Maximize2, title: "Expansion", desc: "Scaling impact through strategic design systems." },
-                    { icon: Move, title: "Motion", desc: "Breathing life into static interfaces." }
+                    { icon: Palette, title: "Art Direction", desc: "Defining the visual soul.", index: "01" },
+                    { icon: Code2, title: "Craftsmanship", desc: "Hand-coded engines.", index: "02" },
+                    { icon: Maximize2, title: "Expansion", desc: "Systems that scale.", index: "03" },
+                    { icon: Move, title: "Motion", desc: "Interfaces that breathe.", index: "04" },
+                    { icon: Layers, title: "Architecture", desc: "Full-stack foundations.", index: "05" },
+                    { icon: PenTool, title: "Identity", desc: "Marks that leave a legacy.", index: "06" }
                 ].map((s, i) => (
-                    <div key={i} className="group flex gap-8 items-center border-t border-border-subtle py-12 hover:bg-foreground/5 transition-colors px-4 -mx-4 rounded-xl cursor-default">
-                        <div className="p-4 rounded-full bg-background border border-border-subtle group-hover:border-foreground/20 transition-colors">
-                          <s.icon strokeWidth={1} size={24} className="text-muted-foreground group-hover:text-foreground transition-colors" />
+                    <div key={i} className="group relative bg-background/40 border border-border-subtle p-10 hover:bg-foreground/5 transition-colors duration-500">
+                        <div className="flex justify-between items-start mb-8">
+                            <div className="p-3 rounded-lg text-muted-foreground group-hover:text-foreground transition-colors">
+                                <s.icon strokeWidth={1} size={28} />
+                            </div>
+                            <span className="text-[10px] font-mono text-muted-foreground/30">{s.index}</span>
                         </div>
-                        <div className="flex-grow">
-                            <h3 className="text-xl font-light mb-1 uppercase tracking-widest">{s.title}</h3>
-                            <p className="text-muted-foreground text-sm font-light">{s.desc}</p>
-                        </div>
-                        <ChevronRight className="opacity-0 group-hover:opacity-100 transition-opacity text-muted-foreground" size={16} />
+                        <h3 className="text-xl font-light mb-2 text-foreground">{s.title}</h3>
+                        <p className="text-muted-foreground text-sm font-light leading-relaxed">{s.desc}</p>
                     </div>
                 ))}
-                {/* Closing Border */}
-                <div className="border-t border-border-subtle" />
             </div>
         </div>
       </section>
 
       {/* SECTION 5: FINAL CTA */}
-      <section className="py-60 px-6 bg-transparent text-center relative z-10 border-t border-border-subtle">
+      <section className="py-40 px-6 bg-transparent text-center relative z-10 border-t border-border-subtle">
         <div className="max-w-2xl mx-auto space-y-12">
-            <motion.div className="w-40 h-40 mx-auto relative group">
+            <motion.div className="w-32 h-32 mx-auto relative group">
                 <div className="absolute inset-0 bg-foreground/5 blur-3xl rounded-full" />
-                {/* Apply the new brand-logo class here too */}
-                <img src="/talormayde-logo.png" alt="Mark" className="brand-logo relative z-10 w-full h-full object-contain opacity-80" />
+                <img src="/talormayde-logo.png" alt="Talormayde Mark" className="adaptive-logo relative z-10 w-full h-full object-contain opacity-80" />
             </motion.div>
             
-            {/* REMOVED mix-blend-overlay, ADDED text-foreground */}
             <h2 className="text-4xl md:text-6xl font-light tracking-tight text-foreground">
                 What will we create?
             </h2>

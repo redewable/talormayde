@@ -31,7 +31,7 @@ export default function About() {
                 
                 <div className="max-w-2xl text-lg md:text-xl text-zinc-400 font-light leading-relaxed space-y-6">
                     <p>
-                        <strong className="text-foreground font-normal">Talormayde</strong> is an interdisciplinary atelier positioned at the intersection of design, technology, and art.
+                        <strong className="text-foreground font-normal">talormayde</strong> is an interdisciplinary atelier positioned at the intersection of design, technology, and art.
                     </p>
                     <p>
                         We reject the separation between &quot;Creative&quot; and &quot;Technical.&quot; 
