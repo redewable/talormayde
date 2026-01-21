@@ -1,12 +1,14 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Home, Briefcase, Sparkles, User } from "lucide-react";
+// This is the line that was likely causing issues:
+import { Home, Briefcase, Sparkles, User, Fingerprint } from "lucide-react";
 import { usePathname } from "next/navigation";
 
 const navItems = [
   { name: "Home", path: "/", icon: Home },
   { name: "Work", path: "/#work", icon: Briefcase },
+  { name: "About", path: "/about", icon: Fingerprint }, // The new 'DNA' link
   { name: "Services", path: "/services", icon: Sparkles },
   { name: "Client", path: "/login", icon: User },
 ];
@@ -41,7 +43,9 @@ export default function NavBar() {
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 />
               )}
+              
               <Icon size={20} strokeWidth={isActive ? 2.5 : 2} />
+              
               <span className="text-[10px] font-medium mt-1 md:block hidden">
                 {item.name}
               </span>
