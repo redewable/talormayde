@@ -1,78 +1,101 @@
 "use client";
 import { motion } from "framer-motion";
-import { Shield, Lock, EyeOff } from "lucide-react";
+import { Lock, FileText, ShieldCheck, Eye } from "lucide-react";
 import Link from "next/link";
+import LivingCanvas from "@/components/LivingCanvas";
 
 export default function Privacy() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-400 pt-32 px-6 pb-20 font-mono text-sm">
+    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-white selection:text-black pt-32 px-6 pb-20 relative overflow-hidden">
       
-      <div className="max-w-3xl mx-auto">
+      {/* Background Ambience */}
+      <div className="fixed inset-0 pointer-events-none opacity-30">
+        <LivingCanvas />
+      </div>
+
+      <div className="relative z-10 max-w-3xl mx-auto">
         
         {/* Header */}
-        <div className="mb-16 border-b border-white/10 pb-8">
-          <div className="flex items-center gap-2 text-emerald-500 mb-4">
-            <Shield size={16} />
-            <span className="uppercase tracking-widest text-xs">Protocol: Privacy</span>
-          </div>
-          <h1 className="text-4xl text-white font-bold tracking-tighter mb-4 font-sans">
-            DATA PROTECTION DIRECTIVE
+        <div className="mb-24 text-center space-y-6">
+          <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/20 to-transparent mx-auto mb-8" />
+          
+          <h1 className="text-4xl md:text-6xl font-light tracking-tight text-white mix-blend-overlay">
+            PRIVACY POLICY
           </h1>
-          <p className="opacity-50">Last Updated: {new Date().toLocaleDateString()}</p>
+          <p className="text-zinc-500 text-xs font-mono tracking-[0.2em] uppercase max-w-lg mx-auto leading-relaxed">
+            Effective Date: {new Date().toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}
+          </p>
         </div>
 
         {/* Content */}
-        <div className="space-y-12 leading-relaxed">
+        <div className="space-y-16 leading-relaxed text-zinc-400 font-light">
           
-          <section>
-            <h3 className="text-white font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
-              <Lock size={14} /> 1. Data Collection
+          <section className="space-y-6">
+            <h3 className="text-white text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-white/5 pb-4">
+              <FileText size={14} className="text-zinc-500" /> 1. Information Collection
             </h3>
-            <p className="mb-4">
-              Talormayde ("The Agency") collects specific data points to establish communication channels. 
-              When you initiate a transmission via our contact protocol, we secure the following assets:
+            <p>
+              Talormayde Studio collects information necessary to provide our design and development services. 
+              When you contact us or commission a project, we may collect:
             </p>
-            <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500">
-              <li>Identity (Name / Organization)</li>
-              <li>Coordinates (Email Address)</li>
-              <li>Mission Brief (Project Details)</li>
-              <li>Telemetry (Browser Metadata & Timezone)</li>
+            <ul className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+              {[
+                "Personal Identity (Name)",
+                "Contact Information (Email)",
+                "Project Specifications",
+                "Billing Details (via Stripe)"
+              ].map((item, i) => (
+                <li key={i} className="flex items-center gap-3 text-sm text-zinc-300 bg-white/5 p-4 rounded-lg border border-white/5">
+                  <div className="w-1 h-1 bg-white rounded-full" />
+                  {item}
+                </li>
+              ))}
             </ul>
           </section>
 
-          <section>
-            <h3 className="text-white font-bold uppercase tracking-wider mb-4 flex items-center gap-2">
-              <EyeOff size={14} /> 2. The Black Box (Storage)
+          <section className="space-y-6">
+            <h3 className="text-white text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-white/5 pb-4">
+              <Lock size={14} className="text-zinc-500" /> 2. Security & Storage
             </h3>
             <p>
-              Your data is encrypted and stored in our secure database ("The Black Box"). 
-              We utilize Google Cloud Platform (Firebase) for enterprise-grade security. 
-              We do not sell, trade, or leak your intel to third-party operatives.
+              We value discretion. Your data is encrypted and stored securely using enterprise-grade infrastructure (Google Cloud Platform). 
+              We do not share, sell, or disclose client information to third parties unless required by law or necessary for project fulfillment (e.g., payment processing).
             </p>
           </section>
 
-          <section>
-            <h3 className="text-white font-bold uppercase tracking-wider mb-4">3. Operational Usage</h3>
+          <section className="space-y-6">
+            <h3 className="text-white text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-white/5 pb-4">
+              <Eye size={14} className="text-zinc-500" /> 3. Usage of Information
+            </h3>
             <p>
-              Data is used strictly for:
+              Information is used strictly for the purpose of:
             </p>
-            <ul className="list-disc pl-6 space-y-2 marker:text-emerald-500 mt-2">
-              <li>Establishing project timelines.</li>
-              <li>Sending invoices and contracts.</li>
-              <li>Improving site performance via anonymous analytics.</li>
+            <ul className="list-disc pl-5 space-y-2 text-zinc-400 marker:text-zinc-600">
+              <li>Facilitating the design and development process.</li>
+              <li>Processing invoices and contracts.</li>
+              <li>maintaining a record of project deliverables.</li>
             </ul>
           </section>
 
-          <section className="p-6 bg-zinc-900/30 border border-white/5 rounded-xl">
-            <h3 className="text-white font-bold uppercase tracking-wider mb-2">4. Your Rights</h3>
-            <p className="mb-4">
-              You maintain full clearance level to request the deletion of your data logs.
+          <section className="p-8 bg-black/40 border border-white/5 rounded-2xl backdrop-blur-sm">
+            <h3 className="text-white text-xs font-mono uppercase tracking-widest mb-4 flex items-center gap-2">
+               <ShieldCheck size={14} /> Your Rights
+            </h3>
+            <p className="mb-6 text-sm">
+              You maintain the right to access, correct, or delete your personal information from our records at any time.
             </p>
-            <Link href="/contact" className="text-emerald-500 hover:text-white underline underline-offset-4 transition-colors">
-              Request Data Purge &rarr;
+            <Link href="/contact" className="inline-flex items-center gap-2 text-white border-b border-white/20 pb-1 hover:border-white transition-all text-xs uppercase tracking-widest">
+              Contact Privacy Officer &rarr;
             </Link>
           </section>
 
+        </div>
+
+        {/* Footer */}
+        <div className="mt-32 pt-8 border-t border-white/5 text-center">
+            <p className="text-[10px] text-zinc-600 font-mono uppercase tracking-widest">
+                Talormayde Studio © {new Date().getFullYear()}
+            </p>
         </div>
 
       </div>

@@ -1,117 +1,122 @@
 "use client";
 import { motion } from "framer-motion";
-import { Camera, Zap, Globe, TrendingUp } from "lucide-react";
-import Link from "next/link";
+import { Camera, Globe, TrendingUp, Monitor, Layers, Cpu } from "lucide-react";
 import Packages from "@/components/Packages";
 import FAQ from "@/components/FAQ";
+import LivingCanvas from "@/components/LivingCanvas";
+import Methodology from "@/components/Methodology"; // Import it
 
 const capabilities = [
   {
     category: "DIGITAL ARCHITECTURE",
     items: [
-      "High-Performance Web Development",
-      "Generative Engine Optimization (GEO)",
-      "Technical SEO & Semantics",
-      "Interactive 3D Environments",
+      "Bespoke Web Platforms",
+      "Generative Engine Optimization",
+      "Semantic Structure",
+      "Spatial Computing / 3D",
     ],
     icon: Globe,
-    color: "text-blue-400",
+    color: "text-indigo-300",
   },
   {
     category: "VISUAL ENGINEERING",
     items: [
-      "Cinematic Videography",
-      "Editorial Photography",
-      "Brand Storytelling",
-      "Post-Production & VFX",
+      "Cinematic Documentation",
+      "Art Direction",
+      "Motion Design System",
+      "Post-Production & Grading",
     ],
     icon: Camera,
-    color: "text-purple-400",
+    color: "text-emerald-300",
   },
   {
-    category: "AUDIENCE WARFARE",
+    category: "SIGNAL EXPANSION",
     items: [
-      "Social Media Strategy",
-      "YouTube Channel Growth",
-      "Content Distribution Systems",
-      "Analytics & Conversion",
+      "Brand Positioning",
+      "Content Ecosystems",
+      "Distribution Strategy",
+      "Conversion Intelligence",
     ],
     icon: TrendingUp,
-    color: "text-emerald-400",
+    color: "text-zinc-300",
   },
 ];
 
 export default function Services() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-32 px-6 pb-20">
+    <div className="min-h-screen bg-zinc-950 text-white pt-32 pb-20 relative overflow-hidden font-sans selection:bg-white selection:text-black">
       
-      {/* Header */}
-      <div className="max-w-5xl mx-auto mb-24 text-center">
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="text-zinc-500 font-mono text-xs tracking-[0.3em] uppercase mb-4"
-        >
-          Capabilities & Systems
-        </motion.p>
-        <motion.h1 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-8xl font-bold tracking-tighter mb-8"
-        >
-          FULL STACK <br />
-          <span className="text-transparent bg-clip-text bg-gradient-to-b from-zinc-200 to-zinc-800">
-            DOMINANCE
-          </span>
-        </motion.h1>
-        <motion.p 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed"
-        >
-          We don't just build websites; we build media companies. 
-          From the code that runs the engine to the content that fuels it.
-        </motion.p>
+      {/* Background Ambience */}
+      <div className="fixed inset-0 pointer-events-none opacity-30">
+        <LivingCanvas />
       </div>
 
-      {/* The Capabilities Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
-        {capabilities.map((cap, index) => (
-          <motion.div
-            key={cap.category}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: index * 0.1 }}
-            className="group p-8 rounded-3xl bg-zinc-900/30 border border-white/5 hover:border-white/10 transition-all hover:bg-zinc-900/50"
-          >
-            <div className={`mb-6 p-4 rounded-2xl w-fit bg-black border border-white/5 ${cap.color}`}>
-              <cap.icon size={28} />
-            </div>
-            
-            <h3 className="text-sm font-mono text-zinc-500 tracking-widest mb-6 border-b border-white/5 pb-4">
-              {cap.category}
-            </h3>
+      <div className="relative z-10">
+        
+        {/* Header */}
+        <div className="max-w-5xl mx-auto mb-32 px-6 text-center">
+            <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-6"
+            >
+                <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/20 to-transparent mx-auto mb-8" />
+                
+                <h1 className="text-5xl md:text-8xl font-light tracking-tight text-white mix-blend-overlay">
+                    CAPABILITIES
+                </h1>
+                <p className="text-zinc-400 text-sm md:text-base font-mono tracking-[0.2em] uppercase max-w-2xl mx-auto leading-loose">
+                    We do not just build websites.<br/>
+                    We engineer <span className="text-white border-b border-white/20 pb-1">digital ecosystems</span>.
+                </p>
+            </motion.div>
+        </div>
 
-            <ul className="space-y-4">
-              {cap.items.map((item) => (
-                <li key={item} className="flex items-center gap-3 text-zinc-300">
-                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-700 group-hover:bg-white transition-colors" />
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </motion.div>
-        ))}
+        {/* The Capabilities Grid */}
+        <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 px-6 mb-40">
+            {capabilities.map((cap, index) => (
+            <motion.div
+                key={cap.category}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group p-10 rounded-3xl bg-black/20 border border-white/5 hover:border-white/10 transition-all hover:bg-black/40 backdrop-blur-sm"
+            >
+                <div className={`mb-8 p-4 rounded-full w-fit bg-white/5 border border-white/5 ${cap.color} group-hover:bg-white/10 transition-colors`}>
+                    <cap.icon strokeWidth={1} size={32} />
+                </div>
+                
+                <h3 className="text-xs font-mono text-zinc-500 tracking-widest mb-8 border-b border-white/5 pb-4 uppercase">
+                    {cap.category}
+                </h3>
+
+                <ul className="space-y-6">
+                {cap.items.map((item) => (
+                    <li key={item} className="flex items-center gap-4 text-zinc-300 font-light group-hover:text-white transition-colors">
+                        <div className="w-1 h-1 rounded-full bg-zinc-600 group-hover:bg-white transition-colors" />
+                        {item}
+                    </li>
+                ))}
+                </ul>
+            </motion.div>
+            ))}
+        </div>
+
+        {/* --- THE METHOD SECTION --- */}
+            <Methodology />
+
+        {/* --- PACKAGES SECTION (Wrapped to match style) --- */}
+        <div className="relative z-10 border-t border-white/5 pt-32">
+             <Packages />
+        </div>
+
+        {/* --- FAQ SECTION (Wrapped to match style) --- */}
+        <div className="relative z-10 border-t border-white/5 pt-32">
+             <FAQ />
+        </div>
+
       </div>
-
-      {/* --- NEW: PACKAGES SECTION --- */}
-      <Packages />
-
-      {/* --- NEW: FAQ SECTION --- */}
-      <FAQ />
-
     </div>
   );
 }

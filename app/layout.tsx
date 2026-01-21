@@ -1,52 +1,42 @@
-import type { Metadata } from "next";
-import { Inter, Space_Grotesk } from "next/font/google"; 
+"use client"; // This must be a client component to handle the loading state
+import { useState, useEffect } from "react";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import ClientLayout from "./ClientLayout"; 
-import Footer from "@/components/Footer"; 
-import Grain from "@/components/Grain"; 
+import NavBar from "@/components/NavBar";
+import Footer from "@/components/Footer";
+import Preloader from "@/components/Preloader";
+import { AnimatePresence } from "framer-motion";
+import { ThemeProvider } from "@/components/theme-provider";
 
-// Load Fonts
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const space = Space_Grotesk({ subsets: ["latin"], variable: "--font-space" });
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
 
-// --- SEO CONFIGURATION ---
-export const metadata: Metadata = {
-  title: {
-    default: "talormayde | Digital Architecture & Media",
-    template: "%s | Talormayde"
-  },
-  description: "We build digital empires. Full-stack development, cinematic storytelling, and generative engine optimization.",
-  keywords: ["Digital Architecture", "Web Development", "Video Production", "SEO", "Next.js", "Talormayde", "Texas"],
-  openGraph: {
-    title: "talormayde | Build Legacy",
-    description: "Digital architecture built for performance.",
-    url: "https://talormayde.com",
-    siteName: "talormayde",
-    locale: "en_US",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
-  },
-};
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const [loading, setLoading] = useState(true);
+
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className={`${inter.variable} ${space.variable} bg-zinc-950 text-white font-sans antialiased selection:bg-white selection:text-black`}>
-        
-        <Grain />
-
-        <ClientLayout>
-          {children}
-          <Footer />
-        </ClientLayout>
-        
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <AnimatePresence mode="wait">
+            {loading ? (
+              <Preloader key="preloader" onComplete={() => setLoading(false)} />
+            ) : (
+              <>
+                <NavBar />
+                <main>{children}</main>
+                <Footer />
+              </>
+            )}
+          </AnimatePresence>
+        </ThemeProvider>
       </body>
     </html>
   );

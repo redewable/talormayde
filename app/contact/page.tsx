@@ -1,162 +1,156 @@
 "use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Check, Mail, MapPin, Loader2, AlertCircle } from "lucide-react";
-// --- NEW IMPORTS ---
-import { collection, addDoc, serverTimestamp } from "firebase/firestore"; 
-import { db } from "@/lib/firebase"; 
+import { ArrowRight, Loader2, Send } from "lucide-react";
+import LivingCanvas from "@/components/LivingCanvas";
+import { addDoc, collection } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export default function Contact() {
-  // --- CONFIGURATION ---
-  const ACCESS_KEY = "d1c6f53e-c839-4013-b75d-6017189fa9ba"; // <--- REMEMBER TO PASTE YOUR KEY BACK IN!
+  const [loading, setLoading] = useState(false);
+  const [sent, setSent] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    vision: ""
+  });
 
-  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setStatus("sending");
+    setLoading(true);
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    const data = Object.fromEntries(formData.entries()); // Convert to JSON object for Firebase
-
-    // 1. SAVE TO "BLACK BOX" (FIREBASE)
     try {
+      // Send to Firebase "leads" collection
       await addDoc(collection(db, "leads"), {
-        name: data.name,
-        email: data.email,
-        service: data.service,
-        message: data.message,
-        timestamp: serverTimestamp(),
-        status: "new" // Mark as unread
+        name: formData.name,
+        email: formData.email,
+        message: formData.vision, // Mapping 'vision' to 'message'
+        service: "Commission Inquiry",
+        date: new Date().toISOString(),
+        status: "new"
       });
-
-      // 2. SEND EMAIL (WEB3FORMS)
-      formData.append("access_key", ACCESS_KEY);
-      const response = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData
-      });
-      const result = await response.json();
-
-      if (result.success) {
-        setStatus("success");
-        form.reset();
-      } else {
-        setStatus("error");
-      }
+      
+      // Optional: Trigger email alert here if you set up Resend later
+      
+      setLoading(false);
+      setSent(true);
     } catch (error) {
-      console.error("Transmission Error:", error);
-      setStatus("error");
+      console.error(error);
+      setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-32 px-6 pb-20 relative overflow-hidden">
+    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-white selection:text-black flex items-center justify-center relative overflow-hidden">
       
-      <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-blue-900/10 rounded-full blur-[120px] pointer-events-none" />
+      {/* Background - Reusing the Living Canvas for brand consistency */}
+      <div className="opacity-50">
+        <LivingCanvas />
+      </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 relative z-10">
+      <div className="relative z-10 w-full max-w-2xl px-6 py-20">
         
-        {/* Left: The Pitch */}
-        <motion.div 
-          initial={{ opacity: 0, x: -50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
-          className="space-y-12"
-        >
-          <div>
-            <h1 className="text-5xl md:text-7xl font-bold tracking-tighter mb-6">
-              INITIATE <br />
-              <span className="text-zinc-500">PROTOCOL.</span>
+        {/* Header */}
+        <div className="mb-16 text-center space-y-4">
+            <h1 className="text-4xl md:text-5xl font-light tracking-tight text-white mix-blend-overlay">
+                THE COMMISSION
             </h1>
-            <p className="text-xl text-zinc-400 leading-relaxed max-w-md">
-              Ready to engineer your legacy? Tell us about the mission. 
-              We accept a limited number of clients per quarter.
+            <p className="text-zinc-500 text-sm font-mono tracking-widest uppercase">
+                We take on a limited number of visions each year.
             </p>
-          </div>
+        </div>
 
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 text-zinc-300">
-              <div className="p-3 bg-zinc-900 rounded-full border border-white/10">
-                <Mail size={20} className="text-emerald-500" />
-              </div>
-              <div>
-                <p className="text-xs font-mono text-zinc-500 uppercase">Direct Line</p>
-                <p className="text-lg font-bold">talormayde@gmail.com</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-4 text-zinc-300">
-              <div className="p-3 bg-zinc-900 rounded-full border border-white/10">
-                <MapPin size={20} className="text-blue-500" />
-              </div>
-              <div>
-                <p className="text-xs font-mono text-zinc-500 uppercase">Base of Operations</p>
-                <p className="text-lg font-bold">Global / Remote</p>
-              </div>
-            </div>
-          </div>
-        </motion.div>
-
-        {/* Right: The Form */}
-        <motion.div 
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-zinc-900/30 backdrop-blur-sm border border-white/10 p-8 md:p-10 rounded-3xl"
-        >
-          {status === "success" ? (
-            <div className="h-full flex flex-col items-center justify-center text-center space-y-6 min-h-[400px]">
-              <div className="w-20 h-20 bg-emerald-500/20 text-emerald-500 rounded-full flex items-center justify-center mb-4">
-                <Check size={40} />
-              </div>
-              <h3 className="text-3xl font-bold">Transmission Received.</h3>
-              <p className="text-zinc-400">Data secured in the Black Box. We will establish contact shortly.</p>
-              <button onClick={() => setStatus("idle")} className="text-zinc-500 hover:text-white underline">Send another message</button>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Bot Trap */}
-              <input type="checkbox" name="botcheck" className="hidden" style={{ display: 'none' }} />
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-zinc-500 uppercase ml-1">Identity</label>
-                  <input name="name" required placeholder="Name / Organization" className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 focus:border-white outline-none transition-colors" />
+        {sent ? (
+            // Success State
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="text-center p-12 border border-white/10 bg-black/50 backdrop-blur-xl rounded-2xl"
+            >
+                <div className="w-16 h-16 mx-auto bg-white/5 rounded-full flex items-center justify-center mb-6">
+                    <Send size={24} className="text-white" />
                 </div>
-                <div className="space-y-2">
-                  <label className="text-xs font-mono text-zinc-500 uppercase ml-1">Contact</label>
-                  <input type="email" name="email" required placeholder="email@company.com" className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 focus:border-white outline-none transition-colors" />
+                <h2 className="text-2xl font-light text-white mb-4">Correspondence Received.</h2>
+                <p className="text-zinc-400 leading-relaxed max-w-md mx-auto">
+                    We are reviewing your vision. If the fit is right, we will reach out to schedule a discovery session.
+                </p>
+                <button 
+                    onClick={() => setSent(false)}
+                    className="mt-8 text-xs font-mono uppercase tracking-widest text-zinc-600 hover:text-white transition-colors"
+                >
+                    Send Another
+                </button>
+            </motion.div>
+        ) : (
+            // The Form
+            <motion.form 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                onSubmit={handleSubmit}
+                className="space-y-12 bg-black/20 backdrop-blur-sm p-8 md:p-12 rounded-3xl border border-white/5"
+            >
+                {/* Name Field */}
+                <div className="space-y-2 group">
+                    <label className="text-xs font-mono text-zinc-500 uppercase tracking-widest group-focus-within:text-white transition-colors">
+                        Who are you?
+                    </label>
+                    <input 
+                        type="text" 
+                        required
+                        className="w-full bg-transparent border-b border-zinc-800 py-4 text-xl md:text-2xl font-light text-white outline-none focus:border-white transition-all placeholder:text-zinc-800"
+                        placeholder="Your Name"
+                        value={formData.name}
+                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                    />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-zinc-500 uppercase ml-1">Mission Type</label>
-                <select name="service" className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 focus:border-white outline-none transition-colors text-zinc-400 appearance-none">
-                  <option>Protocol: Genesis ($2.5k)</option>
-                  <option>Protocol: Ascension ($5k)</option>
-                  <option>Protocol: Dominance ($8k+)</option>
-                  <option>Other / Custom</option>
-                </select>
-              </div>
+                {/* Email Field */}
+                <div className="space-y-2 group">
+                    <label className="text-xs font-mono text-zinc-500 uppercase tracking-widest group-focus-within:text-white transition-colors">
+                        Where can we reach you?
+                    </label>
+                    <input 
+                        type="email" 
+                        required
+                        className="w-full bg-transparent border-b border-zinc-800 py-4 text-xl md:text-2xl font-light text-white outline-none focus:border-white transition-all placeholder:text-zinc-800"
+                        placeholder="email@address.com"
+                        value={formData.email}
+                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                    />
+                </div>
 
-              <div className="space-y-2">
-                <label className="text-xs font-mono text-zinc-500 uppercase ml-1">Intel</label>
-                <textarea name="message" required placeholder="Project goals, timeline, and budget..." className="w-full bg-zinc-950 border border-zinc-800 rounded-xl p-4 h-32 focus:border-white outline-none transition-colors resize-none" />
-              </div>
+                {/* The Vision Field */}
+                <div className="space-y-2 group">
+                    <label className="text-xs font-mono text-zinc-500 uppercase tracking-widest group-focus-within:text-white transition-colors">
+                        What will we create together?
+                    </label>
+                    <textarea 
+                        required
+                        rows={4}
+                        className="w-full bg-transparent border-b border-zinc-800 py-4 text-xl md:text-2xl font-light text-white outline-none focus:border-white transition-all placeholder:text-zinc-800 resize-none"
+                        placeholder="Tell us about the vision..."
+                        value={formData.vision}
+                        onChange={(e) => setFormData({...formData, vision: e.target.value})}
+                    />
+                </div>
 
-              {status === "error" && (
-                 <div className="text-red-400 text-sm flex items-center gap-2">
-                    <AlertCircle size={16} /> Connection failed. Please try again.
-                 </div>
-              )}
+                <div className="pt-8 flex justify-end">
+                    <button 
+                        disabled={loading}
+                        className="group relative px-8 py-4 bg-white text-black rounded-full font-bold text-sm tracking-widest uppercase overflow-hidden hover:pr-12 transition-all disabled:opacity-50 disabled:hover:pr-8"
+                    >
+                        <span className="relative z-10 flex items-center gap-2">
+                            {loading ? "Sending..." : "Send Inquiry"} 
+                            {!loading && <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />}
+                        </span>
+                        <div className="absolute inset-0 bg-zinc-200 translate-y-full group-hover:translate-y-0 transition-transform duration-300" />
+                    </button>
+                </div>
 
-              <button disabled={status === "sending"} className="w-full bg-white text-black font-bold py-4 rounded-xl hover:scale-[1.02] active:scale-[0.98] transition-all flex items-center justify-center gap-2 group disabled:opacity-50">
-                {status === "sending" ? <><Loader2 size={20} className="animate-spin" /> ENCRYPTING & SENDING...</> : <><ArrowRight size={20} /> SEND TRANSMISSION</>}
-              </button>
-            </form>
-          )}
-        </motion.div>
+            </motion.form>
+        )}
+
       </div>
     </div>
   );

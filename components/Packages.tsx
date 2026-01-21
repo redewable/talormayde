@@ -1,73 +1,69 @@
 "use client";
 import { motion } from "framer-motion";
-import { Check, Zap, Globe, Crown } from "lucide-react";
+import { Check, Layers, Layout, Sparkles } from "lucide-react";
 import Link from "next/link";
 
 const TIERS = [
   {
-    name: "PROTOCOL: GENESIS",
+    name: "Foundation",
     price: "$2,500",
-    desc: "The essential digital footprint. Perfect for startups establishing a beachhead.",
-    icon: Globe,
+    desc: "The essential digital footprint. Meticulously crafted for emerging brands establishing their aesthetic.",
+    icon: Layout,
     features: [
       "High-Performance Landing Page",
-      "Next.js + Tailwind Architecture",
+      "Next.js + React Architecture",
       "Mobile-First Responsive Design",
-      "Basic SEO Configuration",
+      "Core SEO Configuration",
       "Contact Form Integration",
-      "1 Week Turnaround"
+      "1 Week Timeline"
     ],
-    cta: "Initiate Genesis",
-    color: "border-zinc-800",
-    bg: "bg-zinc-900/20"
+    cta: "Select Foundation",
   },
   {
-    name: "PROTOCOL: ASCENSION",
+    name: "Signature",
     price: "$5,000",
-    desc: "Full-scale digital ecosystem. For brands ready to compete and convert.",
-    icon: Zap,
+    desc: "Our standard for digital excellence. A complete immersive ecosystem designed to convert and scale.",
+    icon: Layers,
     popular: true,
     features: [
       "Multi-Page Interactive System",
-      "Admin Dashboard (CMS)",
-      "Blog / Project Portfolio",
-      "Advanced Animation & Physics",
-      "Google Analytics & GEO Setup",
-      "Email Marketing Integration",
-      "3 Week Turnaround"
+      "Content Management (CMS)",
+      "Project / Journal Portfolio",
+      "Advanced Motion & Physics",
+      "Analytics & Growth Setup",
+      "Newsletter Integration",
+      "3 Week Timeline"
     ],
-    cta: "Initiate Ascension",
-    color: "border-emerald-500/50",
-    bg: "bg-zinc-900/60"
+    cta: "Select Signature",
   },
   {
-    name: "PROTOCOL: DOMINANCE",
-    price: "$8,000+",
-    desc: "Total market warfare. Custom engineering, video production, and aggressive growth.",
-    icon: Crown,
+    name: "Bespoke",
+    price: "Custom",
+    desc: "Unlimited engineering. For visionaries requiring custom applications, art direction, and aggressive growth.",
+    icon: Sparkles,
     features: [
       "Enterprise-Grade Architecture",
-      "E-Commerce / Custom Web App",
-      "Cinematic Video Production",
-      "Social Media Strategy (1 Month)",
+      "Custom Web Applications",
+      "Cinematic Art Direction",
+      "Full Content Strategy",
       "Advanced SEO & Backlinking",
-      "Priority 24/7 Support",
+      "Priority Access Support",
       "Custom Timeline"
     ],
-    cta: "Initiate Dominance",
-    color: "border-purple-500/50",
-    bg: "bg-zinc-900/20"
+    cta: "Inquire for Bespoke",
   }
 ];
 
 export default function Packages() {
   return (
-    <section className="py-32 px-6 max-w-7xl mx-auto">
+    <section className="py-20 px-6 max-w-7xl mx-auto font-sans">
       
-      <div className="text-center mb-20">
-        <h2 className="text-4xl md:text-6xl font-bold mb-6">TACTICAL LOADOUTS</h2>
-        <p className="text-zinc-400 max-w-xl mx-auto">
-          Transparent pricing for scalable systems. Choose your level of engagement.
+      <div className="text-center mb-24 space-y-6">
+        <h2 className="text-4xl md:text-5xl font-light text-white tracking-tight">
+          ENGAGEMENT MODELS
+        </h2>
+        <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest max-w-md mx-auto">
+          Transparent investments for scalable systems.
         </p>
       </div>
 
@@ -77,30 +73,40 @@ export default function Packages() {
             key={i}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className={`relative p-8 rounded-3xl border ${tier.color} ${tier.bg} flex flex-col`}
+            className={`relative p-10 rounded-3xl border flex flex-col transition-all duration-500 ${
+              tier.popular 
+                ? "bg-white/5 border-white/20 shadow-2xl shadow-white/5" 
+                : "bg-black/20 border-white/5 hover:border-white/10"
+            }`}
           >
-            {/* "Most Popular" Badge */}
-            {tier.popular && (
-              <div className="absolute -top-4 left-1/2 -translate-x-1/2 bg-emerald-500 text-black font-bold text-xs uppercase tracking-widest px-4 py-1 rounded-full shadow-[0_0_20px_rgba(16,185,129,0.4)]">
-                Recommended
+            {/* Header */}
+            <div className="mb-10">
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-6 ${
+                tier.popular ? "bg-white text-black" : "bg-white/5 text-zinc-400"
+              }`}>
+                <tier.icon strokeWidth={1} size={24} />
               </div>
-            )}
-
-            <div className="mb-8">
-              <div className="w-12 h-12 bg-zinc-950 rounded-xl border border-white/10 flex items-center justify-center mb-6 text-white">
-                <tier.icon size={24} />
+              
+              <h3 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4">
+                {tier.name}
+              </h3>
+              
+              <div className="text-4xl font-light text-white mb-6">
+                {tier.price}
               </div>
-              <h3 className="text-sm font-mono text-zinc-500 tracking-widest mb-2">{tier.name}</h3>
-              <div className="text-4xl font-bold text-white mb-4">{tier.price}</div>
-              <p className="text-sm text-zinc-400 leading-relaxed">{tier.desc}</p>
+              
+              <p className="text-sm text-zinc-400 font-light leading-relaxed">
+                {tier.desc}
+              </p>
             </div>
 
             {/* Feature List */}
-            <ul className="space-y-4 mb-8 flex-grow">
+            <ul className="space-y-4 mb-10 flex-grow">
               {tier.features.map((feat) => (
-                <li key={feat} className="flex items-start gap-3 text-sm text-zinc-300">
-                  <Check size={16} className="mt-0.5 text-emerald-500 flex-shrink-0" />
+                <li key={feat} className="flex items-start gap-4 text-sm text-zinc-300 font-light">
+                  <Check size={14} className={`mt-1 flex-shrink-0 ${tier.popular ? "text-white" : "text-zinc-600"}`} />
                   {feat}
                 </li>
               ))}
@@ -108,10 +114,10 @@ export default function Packages() {
 
             {/* CTA Button */}
             <Link href="/contact" className="w-full">
-              <button className={`w-full py-4 rounded-xl font-bold text-sm tracking-wide transition-all ${
+              <button className={`w-full py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${
                 tier.popular 
-                  ? "bg-white text-black hover:bg-emerald-400" 
-                  : "bg-zinc-800 text-white hover:bg-white hover:text-black"
+                  ? "bg-white text-black hover:bg-zinc-200" 
+                  : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white hover:border-white"
               }`}>
                 {tier.cta}
               </button>
@@ -121,9 +127,9 @@ export default function Packages() {
         ))}
       </div>
 
-      <div className="mt-16 text-center">
-        <p className="text-zinc-500 text-sm">
-          Need a custom deployment? <Link href="/contact" className="text-white underline decoration-zinc-700 underline-offset-4 hover:decoration-white transition-all">Contact Command</Link>
+      <div className="mt-24 text-center">
+        <p className="text-zinc-500 text-sm font-light">
+          Not sure where to start? <Link href="/contact" className="text-white border-b border-zinc-700 pb-0.5 hover:border-white transition-all ml-1">Start a Conversation</Link>
         </p>
       </div>
 

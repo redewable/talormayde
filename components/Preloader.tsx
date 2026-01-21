@@ -6,11 +6,8 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    // We use a variable interval to make it look "organic" (like real data loading)
     let cur = 0;
-    
     const interval = setInterval(() => {
-      // Randomly increment by 1-10 to simulate loading chunks
       const increment = Math.floor(Math.random() * 10) + 1;
       cur += increment;
 
@@ -18,15 +15,13 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         cur = 100;
         setCount(100);
         clearInterval(interval);
-        
-        // Wait 1 full second at 100% so the user sees "100%"
         setTimeout(() => {
           onComplete();
-        }, 1000); 
+        }, 800); 
       } else {
         setCount(cur);
       }
-    }, 60); // Speed of the tick (lower = faster)
+    }, 50);
 
     return () => clearInterval(interval);
   }, [onComplete]);
@@ -36,29 +31,53 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
       className="fixed inset-0 z-[9999] bg-zinc-950 text-white flex flex-col items-center justify-center cursor-wait"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.8, ease: "easeInOut" }}
+      transition={{ duration: 1, ease: "easeInOut" }}
     >
-      <div className="relative overflow-hidden text-center">
-        {/* The Number */}
-        <motion.h1 
-          className="text-[12vw] md:text-[10vw] font-bold font-space leading-none tracking-tighter"
-          initial={{ y: 50, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
+      <div className="relative flex items-center justify-center">
+        {/* THE GLOWING MARK */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8, filter: "blur(10px)" }}
+          animate={{ 
+            opacity: [0, 1, 0.8, 1], 
+            scale: 1, 
+            filter: "blur(0px)" 
+          }}
+          transition={{ duration: 2, ease: "easeOut" }}
+          className="relative w-24 h-24 md:w-32 md:h-32 mb-12"
         >
-          {count}%
-        </motion.h1>
+          {/* Pulsing Ambient Glow */}
+          <div className="absolute inset-0 bg-white/5 blur-3xl rounded-full animate-pulse" />
+          
+          <img 
+            src="/talormayde-logo.png" 
+            alt="Talormayde" 
+            className="relative z-10 w-full h-full object-contain invert opacity-90" 
+          />
+        </motion.div>
       </div>
 
       <motion.div 
-        className="mt-4 flex flex-col items-center gap-2"
+        className="flex flex-col items-center gap-6"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
+        transition={{ delay: 0.5 }}
       >
-        <div className="h-[1px] w-24 bg-zinc-800" />
-        <p className="text-xs font-mono text-zinc-500 tracking-[0.3em] uppercase">
-          {count === 100 ? "System Online" : "Loading Assets"}
-        </p>
+        {/* Minimalist Progress Line */}
+        <div className="h-[1px] w-32 bg-zinc-900 overflow-hidden rounded-full">
+             <motion.div 
+                className="h-full bg-white" 
+                initial={{ width: 0 }}
+                animate={{ width: `${count}%` }}
+                transition={{ ease: "linear" }}
+             />
+        </div>
+
+        <div className="flex flex-col items-center gap-1">
+            <p className="text-[9px] font-mono text-zinc-500 tracking-[0.4em] uppercase">
+              {count === 100 ? "Studio Ready" : "Initializing Atelier"}
+            </p>
+            <span className="text-[10px] font-mono text-zinc-700">{count}%</span>
+        </div>
       </motion.div>
     </motion.div>
   );

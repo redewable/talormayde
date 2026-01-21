@@ -1,10 +1,10 @@
 "use client";
-import { motion, useMotionTemplate, useMotionValue, AnimatePresence } from "framer-motion";
-import { ArrowUpRight } from "lucide-react";
-import { MouseEvent, useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ArrowUpRight, Maximize2 } from "lucide-react";
+import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore"; 
 import { db } from "../lib/firebase"; 
-import ProjectModal from "./ProjectModal"; // <--- Import the new Modal
+import ProjectModal from "./ProjectModal"; 
 
 interface Project {
   id: string;
@@ -15,91 +15,19 @@ interface Project {
   description: string;
   imageUrl?: string;
   order?: number;
-}
-
-function Card({ project, onClick }: { project: Project; onClick: () => void }) {
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function onMouseMove({ currentTarget, clientX, clientY }: MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
-  return (
-    <motion.div
-      layoutId={`card-${project.id}`} // Connects this card to the modal animation
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      onMouseMove={onMouseMove}
-      onClick={onClick} // Open Modal on Click
-      className="group relative overflow-hidden rounded-3xl bg-zinc-900/50 border border-white/10 md:col-span-1 md:row-span-1 h-full min-h-[350px] cursor-pointer"
-    >
-      {/* 1. BACKGROUND IMAGE */}
-      {project.imageUrl && (
-        <div className="absolute inset-0 z-0">
-          <img 
-            src={project.imageUrl} 
-            alt={project.title} 
-            className="w-full h-full object-cover opacity-50 group-hover:opacity-40 transition-all duration-500 scale-100 group-hover:scale-110" 
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/80 to-transparent" />
-        </div>
-      )}
-
-      {/* 2. SPOTLIGHT */}
-      <motion.div
-        className="pointer-events-none absolute -inset-px rounded-3xl opacity-0 transition duration-300 group-hover:opacity-100 z-10"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              650px circle at ${mouseX}px ${mouseY}px,
-              rgba(255,255,255,0.1),
-              transparent 80%
-            )
-          `,
-        }}
-      />
-      
-      {/* 3. CONTENT */}
-      <div className="relative flex h-full flex-col justify-between p-8 z-20">
-        <div className="flex justify-between items-start">
-          <span className="text-xs font-mono text-zinc-300 uppercase tracking-widest border border-white/20 px-3 py-1 rounded-full bg-black/50 backdrop-blur-md">
-            {project.category}
-          </span>
-          <div className="bg-white text-black p-2 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:rotate-45">
-            <ArrowUpRight size={16} />
-          </div>
-        </div>
-
-        <div className="mt-8">
-          <h4 className="text-3xl font-bold text-white mb-2 group-hover:translate-x-1 transition-transform duration-300 drop-shadow-lg">
-            {project.title}
-          </h4>
-          <p className="text-zinc-400 text-sm font-mono mb-2 drop-shadow-md">
-             {project.tech}
-          </p>
-        </div>
-      </div>
-    </motion.div>
-  );
+  orientation?: "square" | "landscape" | "portrait"; // <--- NEW TYPE
 }
 
 export default function Projects() {
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null); // <--- State for Modal
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, "projects"));
-        const data = querySnapshot.docs.map(doc => ({ 
-          id: doc.id, 
-          ...doc.data() 
-        })) as Project[];
+        const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })) as Project[];
         data.sort((a, b) => (a.order || 999) - (b.order || 999));
         setProjects(data);
       } catch (error) {
@@ -111,34 +39,94 @@ export default function Projects() {
     fetchProjects();
   }, []);
 
+  // Helper to determine span classes
+  const getGridClasses = (orientation?: string) => {
+    switch(orientation) {
+        case "landscape": return "md:col-span-2 md:row-span-1"; // Wide
+        case "portrait": return "md:col-span-1 md:row-span-2";  // Tall
+        default: return "md:col-span-1 md:row-span-1";          // Square
+    }
+  };
+
   return (
-    <section className="py-32 px-6 max-w-7xl mx-auto" id="work">
-      <div className="mb-16 border-b border-white/10 pb-8">
-        <h3 className="text-4xl md:text-6xl font-bold text-white">Selected Works</h3>
-        <p className="text-zinc-400 mt-4 max-w-md">
-          Digital architecture built for performance and legacy.
-        </p>
+    <section className="py-32 px-6 max-w-7xl mx-auto border-t border-white/5" id="work">
+      
+      {/* Header */}
+      <div className="flex justify-between items-end mb-20">
+        <div>
+          <h2 className="text-4xl md:text-6xl font-light text-white tracking-tight mix-blend-overlay">
+            THE COLLECTION
+          </h2>
+          <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest mt-4">
+            Curated Digital Architecture
+          </p>
+        </div>
+        <div className="hidden md:block text-right">
+          <p className="text-zinc-700 text-[10px] font-mono uppercase tracking-widest">
+            Index: 2024 — 2025
+          </p>
+        </div>
       </div>
 
-      {loading ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[350px]">
-          {[1,2,3].map(i => (
-             <div key={i} className="rounded-3xl bg-zinc-900/30 border border-white/5 animate-pulse h-[350px]" />
-          ))}
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-fr">
-          {projects.map((project) => (
-            <Card 
-              key={project.id} 
-              project={project} 
-              onClick={() => setSelectedProject(project)} // <--- CLICK HANDLER
-            />
-          ))}
-        </div>
-      )}
+      {/* THE COLLAGE GRID */}
+      {/* grid-auto-flow-dense is the magic that fills the holes */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[350px] md:auto-rows-[400px] grid-flow-dense">
+        {loading ? (
+          [1,2,3,4,5,6].map(i => (
+             <div key={i} className="bg-zinc-900/30 animate-pulse border border-white/5 rounded-none" />
+          ))
+        ) : (
+          projects.map((project, i) => (
+            <motion.div
+              layoutId={`card-${project.id}`}
+              key={project.id}
+              onClick={() => setSelectedProject(project)}
+              initial={{ opacity: 0, scale: 0.95 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.05 }}
+              className={`group cursor-pointer relative bg-zinc-900 border border-white/5 overflow-hidden ${getGridClasses(project.orientation)}`}
+            >
+              {/* Image Container - Absolute Fill */}
+              <div className="absolute inset-0">
+                <div className="absolute inset-0 bg-black/30 z-10 group-hover:bg-transparent transition-colors duration-500" />
+                
+                {project.imageUrl ? (
+                  <motion.img 
+                    layoutId={`image-${project.id}`}
+                    src={project.imageUrl} 
+                    alt={project.title} 
+                    className="w-full h-full object-cover grayscale group-hover:grayscale-0 scale-100 group-hover:scale-105 transition-all duration-700 ease-out" 
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-zinc-800 font-mono text-xs">NO VISUAL</div>
+                )}
+              </div>
 
-      {/* THE MODAL OVERLAY */}
+              {/* Hover Content */}
+              <div className="absolute inset-0 z-20 p-8 flex flex-col justify-end opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-gradient-to-t from-black/90 via-black/40 to-transparent">
+                  <div className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+                    <div className="flex justify-between items-end">
+                        <div>
+                            <span className="text-emerald-500 text-[10px] font-mono uppercase tracking-widest mb-2 block">
+                                {project.category}
+                            </span>
+                            <h3 className="text-2xl font-light text-white">
+                                {project.title}
+                            </h3>
+                        </div>
+                        <div className="bg-white text-black p-3 rounded-full">
+                            <ArrowUpRight size={16} />
+                        </div>
+                    </div>
+                  </div>
+              </div>
+            </motion.div>
+          ))
+        )}
+      </div>
+
+      {/* Modal Overlay */}
       <AnimatePresence>
         {selectedProject && (
           <ProjectModal 

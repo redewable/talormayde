@@ -1,6 +1,6 @@
 "use client";
 import { motion } from "framer-motion";
-import { Github, Instagram, Linkedin, Twitter, ArrowUpRight } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -24,62 +24,61 @@ export default function Footer() {
   }, []);
 
   return (
-    <footer className="bg-zinc-950 border-t border-white/10 pt-20 pb-10 px-6 relative overflow-hidden">
+    <footer className="bg-zinc-950 border-t border-white/5 pt-20 pb-10 px-6 relative overflow-hidden font-sans selection:bg-white selection:text-black">
       
-      {/* Background Decor */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
+      {/* Background Decor - Subtle & Dark */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-white/5 rounded-full blur-[120px] pointer-events-none mix-blend-overlay" />
 
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mb-24">
           
           {/* Left: The Call */}
           <div className="space-y-8">
-            <h2 className="text-5xl md:text-7xl font-bold tracking-tighter leading-none">
+            <h2 className="text-5xl md:text-7xl font-light tracking-tight leading-none text-white mix-blend-overlay">
               READY TO <br />
-              <span className="text-zinc-500 group-hover:text-white transition-colors">SCALE?</span>
+              <span className="text-white">CREATE?</span>
             </h2>
             <Link href="/contact">
-              <button className="group flex items-center gap-4 text-xl font-bold hover:gap-6 transition-all">
-                <span className="border-b border-white pb-1">INITIATE PROJECT</span>
+              <button className="group flex items-center gap-4 text-sm md:text-base font-mono uppercase tracking-widest hover:gap-6 transition-all text-zinc-400 hover:text-white">
+                <span className="border-b border-zinc-500 group-hover:border-white pb-1 transition-colors">Begin the Work</span>
                 <div className="bg-white text-black rounded-full p-2 group-hover:rotate-45 transition-transform duration-500">
-                  <ArrowUpRight size={20} />
+                  <ArrowUpRight size={16} />
                 </div>
               </button>
             </Link>
           </div>
 
           {/* Right: The Grid */}
-          <div className="grid grid-cols-2 gap-8 text-sm text-zinc-400">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-8 text-xs font-mono uppercase tracking-widest text-zinc-500">
             <div className="space-y-4">
-              <h4 className="text-white font-mono uppercase tracking-widest text-xs mb-6">Sitemap</h4>
+              <h4 className="text-white mb-6 opacity-50">Sitemap</h4>
               <Link href="/" className="block hover:text-white transition-colors">Index</Link>
               <Link href="/services" className="block hover:text-white transition-colors">Capabilities</Link>
-              <Link href="/#work" className="block hover:text-white transition-colors">Selected Work</Link>
-              <Link href="/about" className="block hover:text-white transition-colors">The Agency</Link>
+              <Link href="/#work" className="block hover:text-white transition-colors">The Collection</Link>
+              <Link href="/journal" className="block hover:text-white transition-colors">Journal</Link>
             </div>
             <div className="space-y-4">
-              <h4 className="text-white font-mono uppercase tracking-widest text-xs mb-6">Socials</h4>
+              <h4 className="text-white mb-6 opacity-50">Socials</h4>
               <Link href="#" className="block hover:text-white transition-colors">Instagram</Link>
               <Link href="#" className="block hover:text-white transition-colors">Twitter / X</Link>
               <Link href="#" className="block hover:text-white transition-colors">LinkedIn</Link>
-              <Link href="#" className="block hover:text-white transition-colors">GitHub</Link>
             </div>
             <div className="space-y-4">
-              <h4 className="text-white font-mono uppercase tracking-widest text-xs mb-6">Legal</h4> {/* Renamed from Socials or just add new */}
+              <h4 className="text-white mb-6 opacity-50">Legal</h4>
               <Link href="/privacy" className="block hover:text-white transition-colors">Privacy Policy</Link>
-              <Link href="#" className="block hover:text-white transition-colors">Terms of Service</Link>
+              <Link href="/login" className="block hover:text-emerald-500 transition-colors">Client Access</Link>
             </div>
           </div>
         </div>
 
         {/* Bottom Bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-mono text-zinc-500 uppercase tracking-wider">
+        <div className="border-t border-white/5 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-[10px] font-mono text-zinc-600 uppercase tracking-widest">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse" />
-            <span>Systems Online • {time} TX</span>
+            <div className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-pulse" />
+            <span>Studio Online • {time} TX</span>
           </div>
           <div>
-            © 2025 TALORMAYDE.
+            © 2026 TALORMAYDE.
           </div>
         </div>
       </div>
