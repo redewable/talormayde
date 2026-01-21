@@ -1,15 +1,16 @@
 "use client";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Home, Briefcase, Sparkles, User, Fingerprint, Mail } from "lucide-react"; // Added Mail
+import { Home, Briefcase, Sparkles, User, Fingerprint, Mail, Radio } from "lucide-react"; // Added Mail
 import { usePathname } from "next/navigation";
 
 const navItems = [
   { name: "Home", path: "/", icon: Home },
   { name: "Work", path: "/#work", icon: Briefcase },
   { name: "Services", path: "/services", icon: Sparkles },
+  { name: "Signal", path: "/blog", icon: Radio }, 
   { name: "About", path: "/about", icon: Fingerprint },
-  { name: "Contact", path: "/contact", icon: Mail }, // <--- Added Contact
+  { name: "Contact", path: "/contact", icon: Mail }, 
   { name: "Client", path: "/login", icon: User },
 ];
 

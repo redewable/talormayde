@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, LayoutGrid, LogOut, X, Trash2, Check, Image as ImageIcon, Edit2, List, ArrowUp, ArrowDown, Eye, Inbox, Layers } from "lucide-react";
+import { Plus, LayoutGrid, LogOut, X, Trash2, Check, Image as ImageIcon, Edit2, List, ArrowUp, ArrowDown, Eye, Inbox } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { auth, db, storage } from "../../lib/firebase"; 
@@ -15,11 +15,12 @@ export default function Admin() {
   const [loading, setLoading] = useState(true);
   
   // --- TABS STATE ---
-  const [tab, setTab] = useState<"projects" | "inbox">("projects");
+  const [tab, setTab] = useState<"projects" | "inbox" | "blog">("projects");
 
   // --- DATA STATE ---
   const [projects, setProjects] = useState<any[]>([]);
   const [leads, setLeads] = useState<any[]>([]);
+  const [blogPosts, setBlogPosts] = useState<any[]>([]);
 
   // --- UI STATE ---
   const [viewMode, setViewMode] = useState<"grid" | "list">("list"); 
@@ -30,14 +31,16 @@ export default function Admin() {
 
   // --- FORM STATE ---
   const [newItem, setNewItem] = useState({
+    type: "project", // 'project' or 'post'
     title: "",
     category: "",
     url: "",
     tech: "",
-    description: "",
+    description: "", // Used for Project Desc OR Blog Content
     imageUrl: "",
     order: 99, 
     views: 0,
+    date: new Date().toISOString(), // For Blog
   });
   const [imageFile, setImageFile] = useState<File | null>(null);
 
@@ -51,31 +54,35 @@ export default function Admin() {
       } else {
         setUser(currentUser);
         fetchProjects();
-        fetchLeads(); // <--- NEW: Get Messages
+        fetchLeads();
+        fetchBlogPosts();
       }
       setLoading(false);
     });
     return () => unsubscribe();
   }, [router]);
 
-  // 2. FETCH PROJECTS
+  // 2. FETCH DATA FUNCTIONS
   const fetchProjects = async () => {
     const querySnapshot = await getDocs(collection(db, "projects"));
     const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    // Sort: Lower 'order' numbers first
     data.sort((a: any, b: any) => (a.order || 99) - (b.order || 99));
     setProjects(data);
   };
 
-  // 3. FETCH LEADS (NEW)
   const fetchLeads = async () => {
     const querySnapshot = await getDocs(collection(db, "leads"));
     const data = querySnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    // Ideally sort by timestamp here if available
     setLeads(data);
   };
 
-  // 4. REORDER LOGIC
+  const fetchBlogPosts = async () => {
+    const q = await getDocs(collection(db, "posts"));
+    const data = q.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+    setBlogPosts(data);
+  };
+
+  // 3. REORDER LOGIC (Projects Only)
   const moveProject = async (index: number, direction: 'up' | 'down') => {
     if ((direction === 'up' && index === 0) || (direction === 'down' && index === projects.length - 1)) return;
     
@@ -100,31 +107,65 @@ export default function Admin() {
     }
   };
 
-  // 5. SAVE PROJECT
+  // 4. SAVE (Handles Both Projects AND Blog Posts)
   const handleSave = async () => {
     if (!newItem.title) return;
     setStatus("saving");
 
     try {
       let finalImageUrl = newItem.imageUrl;
+      // Upload Image if new one selected
       if (imageFile) {
-        const imageRef = ref(storage, `projects/${Date.now()}-${imageFile.name}`);
+        const folder = newItem.type === "post" ? "posts" : "projects";
+        const imageRef = ref(storage, `${folder}/${Date.now()}-${imageFile.name}`);
         await uploadBytes(imageRef, imageFile);
         finalImageUrl = await getDownloadURL(imageRef);
       }
 
-      const projectData = { ...newItem, imageUrl: finalImageUrl };
+      // Prepare Data
+      const commonData = {
+        title: newItem.title,
+        category: newItem.category,
+        imageUrl: finalImageUrl,
+      };
 
-      if (editMode && currentId) {
-        await updateDoc(doc(db, "projects", currentId), projectData);
+      let finalData;
+      let collectionName;
+
+      if (newItem.type === "post") {
+        // BLOG POST DATA
+        collectionName = "posts";
+        finalData = {
+            ...commonData,
+            content: newItem.description, // Reusing description field for content
+            date: newItem.date,
+        };
       } else {
-        await addDoc(collection(db, "projects"), projectData);
+        // PROJECT DATA
+        collectionName = "projects";
+        finalData = {
+            ...commonData,
+            url: newItem.url,
+            tech: newItem.tech,
+            description: newItem.description,
+            order: newItem.order,
+            views: newItem.views || 0,
+        };
+      }
+
+      // Save to Firebase
+      if (editMode && currentId) {
+        await updateDoc(doc(db, collectionName, currentId), finalData);
+      } else {
+        await addDoc(collection(db, collectionName), finalData);
       }
       
       setStatus("success");
       setTimeout(() => {
         setIsModalOpen(false);
+        // Refresh Everything
         fetchProjects();
+        fetchBlogPosts();
         resetForm();
         setStatus("idle");
       }, 1000);
@@ -136,22 +177,28 @@ export default function Admin() {
     }
   };
 
-  // 6. DELETE ACTIONS
-  const handleDelete = async (id: string) => {
-    if(!confirm("Destroy this record?")) return;
+  // 5. DELETE ACTIONS
+  const handleDeleteProject = async (id: string) => {
+    if(!confirm("Destroy this project record?")) return;
     await deleteDoc(doc(db, "projects", id));
     fetchProjects();
   };
 
-  const deleteLead = async (id: string) => {
+  const handleDeleteLead = async (id: string) => {
     if(!confirm("Delete this transmission?")) return;
     await deleteDoc(doc(db, "leads", id));
     fetchLeads();
   };
 
-  // 7. HELPERS
-  const openEdit = (project: any) => {
-    setNewItem(project);
+  const handleDeletePost = async (id: string) => {
+    if(!confirm("Delete this intelligence article?")) return;
+    await deleteDoc(doc(db, "posts", id));
+    fetchBlogPosts();
+  };
+
+  // 6. HELPERS
+  const openEditProject = (project: any) => {
+    setNewItem({ ...project, type: "project" });
     setCurrentId(project.id);
     setEditMode(true);
     setIsModalOpen(true);
@@ -159,11 +206,21 @@ export default function Admin() {
   };
 
   const resetForm = () => {
-    setNewItem({ title: "", category: "", url: "", tech: "", description: "", imageUrl: "", order: projects.length + 1, views: 0 });
+    setNewItem({ 
+        type: "project", 
+        title: "", category: "", url: "", tech: "", description: "", imageUrl: "", 
+        order: projects.length + 1, views: 0, date: new Date().toISOString() 
+    });
     setImageFile(null);
     setEditMode(false);
     setCurrentId("");
   };
+
+  const openNewPostModal = () => {
+    resetForm();
+    setNewItem(prev => ({ ...prev, type: "post" }));
+    setIsModalOpen(true);
+  }
 
   if (loading) return <div className="min-h-screen bg-black text-white flex items-center justify-center font-mono">:: VERIFYING CREDENTIALS ::</div>;
 
@@ -184,7 +241,7 @@ export default function Admin() {
         </div>
       </div>
 
-      {/* NEW: TAB SWITCHER */}
+      {/* TABS */}
       <div className="flex gap-8 mb-8 border-b border-zinc-800">
         <button onClick={() => setTab("projects")} className={`pb-4 text-sm font-bold tracking-widest uppercase transition-colors border-b-2 ${tab === "projects" ? "border-emerald-500 text-white" : "border-transparent text-zinc-600 hover:text-zinc-400"}`}>
             Projects ({projects.length})
@@ -192,9 +249,12 @@ export default function Admin() {
         <button onClick={() => setTab("inbox")} className={`pb-4 text-sm font-bold tracking-widest uppercase transition-colors border-b-2 ${tab === "inbox" ? "border-emerald-500 text-white" : "border-transparent text-zinc-600 hover:text-zinc-400"}`}>
             Transmissions ({leads.length})
         </button>
+        <button onClick={() => setTab("blog")} className={`pb-4 text-sm font-bold tracking-widest uppercase transition-colors border-b-2 ${tab === "blog" ? "border-emerald-500 text-white" : "border-transparent text-zinc-600 hover:text-zinc-400"}`}>
+            Intelligence ({blogPosts.length})
+        </button>
       </div>
 
-      {/* --- TAB 1: PROJECTS (YOUR EXISTING DASHBOARD) --- */}
+      {/* --- TAB 1: PROJECTS --- */}
       {tab === "projects" && (
         <>
             <div className="flex justify-between items-center mb-8">
@@ -209,7 +269,6 @@ export default function Admin() {
 
             <div className="min-h-[400px]">
                 {viewMode === "grid" ? (
-                // GRID VIEW
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {projects.map((p) => (
                     <div key={p.id} className="group relative bg-zinc-900/40 border border-zinc-800 rounded-2xl overflow-hidden hover:border-zinc-600 transition-all">
@@ -219,12 +278,10 @@ export default function Admin() {
                             ) : (
                                 <div className="w-full h-full flex items-center justify-center text-zinc-700"><ImageIcon size={32} /></div>
                             )}
-                            
                             <div className="absolute top-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <button onClick={() => openEdit(p)} className="p-2 bg-black/50 backdrop-blur rounded-lg hover:bg-white hover:text-black transition-colors"><Edit2 size={16} /></button>
-                                <button onClick={() => handleDelete(p.id)} className="p-2 bg-red-900/50 backdrop-blur text-red-400 rounded-lg hover:bg-red-600 hover:text-white transition-colors"><Trash2 size={16} /></button>
+                                <button onClick={() => openEditProject(p)} className="p-2 bg-black/50 backdrop-blur rounded-lg hover:bg-white hover:text-black transition-colors"><Edit2 size={16} /></button>
+                                <button onClick={() => handleDeleteProject(p.id)} className="p-2 bg-red-900/50 backdrop-blur text-red-400 rounded-lg hover:bg-red-600 hover:text-white transition-colors"><Trash2 size={16} /></button>
                             </div>
-
                             <div className="absolute bottom-2 left-2 px-2 py-1 bg-black/60 backdrop-blur rounded-md flex items-center gap-2 text-xs font-mono text-zinc-300 border border-white/10">
                                 <Eye size={12} className="text-emerald-400"/> {p.views || 0}
                             </div>
@@ -240,7 +297,6 @@ export default function Admin() {
                     ))}
                 </div>
                 ) : (
-                // LIST VIEW
                 <div className="bg-zinc-900/30 border border-zinc-800 rounded-2xl overflow-hidden">
                     <table className="w-full text-left text-sm text-zinc-400">
                     <thead className="bg-zinc-900 text-zinc-500 font-mono uppercase text-xs">
@@ -256,7 +312,6 @@ export default function Admin() {
                                 </div>
                                 <span className="font-mono text-zinc-500 text-xs">#{p.order}</span>
                             </td>
-                            
                             <td className="p-4">
                                 <div className="flex items-center gap-4">
                                     {p.imageUrl ? (
@@ -272,15 +327,13 @@ export default function Admin() {
                                     </div>
                                 </div>
                             </td>
-
                             <td className="p-4 hidden md:table-cell">
                                 <p className="text-zinc-300">{p.category}</p>
                                 <p className="text-xs font-mono text-zinc-600 truncate max-w-[200px]">{p.tech}</p>
                             </td>
-
                             <td className="p-4 text-right space-x-2">
-                              <button onClick={() => openEdit(p)} className="text-zinc-400 hover:text-white transition-colors text-xs uppercase font-bold tracking-wider">Edit</button>
-                              <button onClick={() => handleDelete(p.id)} className="text-red-900 hover:text-red-500 transition-colors text-xs uppercase font-bold tracking-wider">Delete</button>
+                              <button onClick={() => openEditProject(p)} className="text-zinc-400 hover:text-white transition-colors text-xs uppercase font-bold tracking-wider">Edit</button>
+                              <button onClick={() => handleDeleteProject(p.id)} className="text-red-900 hover:text-red-500 transition-colors text-xs uppercase font-bold tracking-wider">Delete</button>
                             </td>
                         </tr>
                         ))}
@@ -292,7 +345,7 @@ export default function Admin() {
         </>
       )}
 
-      {/* --- TAB 2: INBOX (NEW FEATURE) --- */}
+      {/* --- TAB 2: INBOX --- */}
       {tab === "inbox" && (
         <div className="max-w-4xl mx-auto">
             {leads.length === 0 ? (
@@ -319,7 +372,7 @@ export default function Admin() {
                                 {lead.message}
                             </div>
                             <div className="mt-4 flex justify-end gap-4">
-                                <button onClick={() => deleteLead(lead.id)} className="flex items-center gap-2 text-xs text-red-500 hover:text-red-400 uppercase font-bold tracking-wider">
+                                <button onClick={() => handleDeleteLead(lead.id)} className="flex items-center gap-2 text-xs text-red-500 hover:text-red-400 uppercase font-bold tracking-wider">
                                     <Trash2 size={14} /> Delete
                                 </button>
                                 <a href={`mailto:${lead.email}`} className="flex items-center gap-2 text-xs text-white hover:text-emerald-400 uppercase font-bold tracking-wider">
@@ -333,45 +386,84 @@ export default function Admin() {
         </div>
       )}
 
-      {/* --- MODAL (PROJECTS) --- */}
+      {/* --- TAB 3: BLOG WRITER --- */}
+      {tab === "blog" && (
+            <div className="max-w-4xl mx-auto">
+                {/* Toolbar */}
+                <div className="flex justify-end mb-8">
+                    <button onClick={openNewPostModal} className="flex items-center gap-2 bg-white text-black px-5 py-2.5 rounded-lg font-bold hover:bg-zinc-200 shadow-[0_0_15px_rgba(255,255,255,0.2)]">
+                        <Plus size={18} /> NEW TRANSMISSION
+                    </button>
+                </div>
+
+                {/* List */}
+                <div className="space-y-4">
+                    {blogPosts.map((post) => (
+                        <div key={post.id} className="flex justify-between items-center bg-zinc-900 border border-zinc-800 p-6 rounded-2xl hover:border-emerald-500/30 transition-all">
+                            <div>
+                                <h3 className="text-xl font-bold text-white">{post.title}</h3>
+                                <p className="text-xs font-mono text-zinc-500 mt-1 uppercase">
+                                    {new Date(post.date || Date.now()).toLocaleDateString()} • {post.category || "General"}
+                                </p>
+                            </div>
+                            <div className="flex gap-2">
+                                <Link href={`/blog/${post.id}`} target="_blank" className="p-2 bg-black/50 text-zinc-400 hover:text-white rounded-lg"><Eye size={16}/></Link>
+                                <button onClick={() => handleDeletePost(post.id)} className="p-2 bg-red-900/20 text-red-500 hover:bg-red-900/50 rounded-lg"><Trash2 size={16}/></button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+      )}  
+
+      {/* --- MODAL (SHARED: PROJECT + BLOG) --- */}
       <AnimatePresence>
         {isModalOpen && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
             <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }} className="bg-zinc-950 border border-zinc-800 w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col max-h-[90vh]">
               
               <div className="p-6 border-b border-zinc-800 flex justify-between items-center bg-zinc-900/50">
-                <h3 className="text-xl font-bold">{editMode ? "Edit Protocol" : "Initialize Protocol"}</h3>
+                <h3 className="text-xl font-bold">
+                    {editMode ? "Edit Protocol" : (newItem.type === "post" ? "New Intelligence Article" : "Initialize Project")}
+                </h3>
                 <button onClick={() => setIsModalOpen(false)} className="text-zinc-500 hover:text-white"><X size={20} /></button>
               </div>
 
               <div className="p-6 overflow-y-auto space-y-6">
+                
+                {/* 1. TITLE & CATEGORY */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
-                    <label className="text-xs font-mono text-zinc-500 uppercase">Project Title</label>
+                    <label className="text-xs font-mono text-zinc-500 uppercase">Title</label>
                     <input className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.title} onChange={(e) => setNewItem({...newItem, title: e.target.value})} />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-mono text-zinc-500 uppercase">Order Priority</label>
-                    <input type="number" className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.order} onChange={(e) => setNewItem({...newItem, order: Number(e.target.value)})} />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <label className="text-xs font-mono text-zinc-500 uppercase">Category</label>
                     <input className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.category} onChange={(e) => setNewItem({...newItem, category: e.target.value})} />
                   </div>
-                  <div className="space-y-2">
-                    <label className="text-xs font-mono text-zinc-500 uppercase">Destination URL</label>
-                    <input className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.url} onChange={(e) => setNewItem({...newItem, url: e.target.value})} />
-                  </div>
                 </div>
 
-                <div className="space-y-2">
-                    <label className="text-xs font-mono text-zinc-500 uppercase">Tech Stack</label>
-                    <input placeholder="Next.js • Firebase • Tailwind" className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.tech} onChange={(e) => setNewItem({...newItem, tech: e.target.value})} />
-                </div>
+                {/* 2. PROJECT SPECIFIC FIELDS (Hidden for Blog) */}
+                {newItem.type === "project" && (
+                    <>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div className="space-y-2">
+                                <label className="text-xs font-mono text-zinc-500 uppercase">Order Priority</label>
+                                <input type="number" className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.order} onChange={(e) => setNewItem({...newItem, order: Number(e.target.value)})} />
+                            </div>
+                            <div className="space-y-2">
+                                <label className="text-xs font-mono text-zinc-500 uppercase">Destination URL</label>
+                                <input className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.url} onChange={(e) => setNewItem({...newItem, url: e.target.value})} />
+                            </div>
+                        </div>
+                        <div className="space-y-2">
+                            <label className="text-xs font-mono text-zinc-500 uppercase">Tech Stack</label>
+                            <input placeholder="Next.js • Firebase • Tailwind" className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none" value={newItem.tech} onChange={(e) => setNewItem({...newItem, tech: e.target.value})} />
+                        </div>
+                    </>
+                )}
 
+                {/* 3. IMAGE UPLOAD */}
                 <div className="space-y-2">
                    <label className="text-xs font-mono text-zinc-500 uppercase">Cover Visual</label>
                    <div className="border-2 border-dashed border-zinc-800 rounded-xl p-8 text-center hover:border-zinc-600 transition-colors cursor-pointer relative bg-zinc-900/50">
@@ -384,9 +476,17 @@ export default function Admin() {
                     {newItem.imageUrl && !imageFile && <div className="text-xs text-emerald-500 flex items-center gap-1 mt-1"><Check size={10}/> Image Linked</div>}
                 </div>
 
+                {/* 4. DESCRIPTION / CONTENT */}
                 <div className="space-y-2">
-                    <label className="text-xs font-mono text-zinc-500 uppercase">Briefing</label>
-                    <textarea className="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none h-32 resize-none" value={newItem.description} onChange={(e) => setNewItem({...newItem, description: e.target.value})} />
+                    <label className="text-xs font-mono text-zinc-500 uppercase">
+                        {newItem.type === "post" ? "Article Content" : "Briefing Description"}
+                    </label>
+                    <textarea 
+                        className={`w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 text-white focus:border-white outline-none resize-none ${newItem.type === 'post' ? 'h-64 font-mono text-sm' : 'h-32'}`} 
+                        value={newItem.description} 
+                        onChange={(e) => setNewItem({...newItem, description: e.target.value})} 
+                        placeholder={newItem.type === 'post' ? "Write your article here..." : "Project description..."}
+                    />
                 </div>
               </div>
 

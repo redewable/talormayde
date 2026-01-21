@@ -64,6 +64,11 @@ export default function Footer() {
               <Link href="#" className="block hover:text-white transition-colors">LinkedIn</Link>
               <Link href="#" className="block hover:text-white transition-colors">GitHub</Link>
             </div>
+            <div className="space-y-4">
+              <h4 className="text-white font-mono uppercase tracking-widest text-xs mb-6">Legal</h4> {/* Renamed from Socials or just add new */}
+              <Link href="/privacy" className="block hover:text-white transition-colors">Privacy Policy</Link>
+              <Link href="#" className="block hover:text-white transition-colors">Terms of Service</Link>
+            </div>
           </div>
         </div>
 

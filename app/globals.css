@@ -41,6 +41,11 @@ body {
   color: #000000;
 }
 
+::-moz-selection {
+  background-color: #10b981 !important;
+  color: #000000 !important;
+}
+
 /* --- CINEMATIC SCROLLBAR (Chrome/Safari/Edge) --- */
 ::-webkit-scrollbar {
   width: 10px;
