@@ -1,10 +1,10 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Lock, ArrowRight, User, AlertCircle } from "lucide-react";
 import Link from "next/link";
-import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../../lib/firebase"; // Connects to your engine
+import { signInWithEmailAndPassword, setPersistence, browserLocalPersistence } from "firebase/auth";
+import { auth } from "../../lib/firebase"; 
 import { useRouter } from "next/navigation";
 
 export default function Login() {
@@ -14,19 +14,32 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  // Redirect if already logged in
+  useEffect(() => {
+    // If the browser remembers you, skip the login screen entirely
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) router.push("/admin");
+    });
+    return () => unsubscribe();
+  }, [router]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError("");
 
     try {
+      // 1. Tell Firebase to remember this user in the browser storage (Forever)
+      await setPersistence(auth, browserLocalPersistence);
+      
+      // 2. Now sign in
       await signInWithEmailAndPassword(auth, email, password);
-      // Success! Redirect to the Command Center
+      
+      // 3. Redirect (The useEffect above handles this too, but this is faster)
       router.push("/admin");
     } catch (err: any) {
       console.error(err);
       setError("Access Denied. Invalid credentials.");
-    } finally {
       setLoading(false);
     }
   };

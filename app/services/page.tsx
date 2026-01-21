@@ -1,98 +1,130 @@
 "use client";
 import { motion } from "framer-motion";
-import { Terminal, Database, Cloud, Code2, ShieldCheck, Zap } from "lucide-react";
+import { Camera, Zap, Globe, TrendingUp, Cpu, Layers } from "lucide-react";
+import Link from "next/link";
 
-const services = [
+const capabilities = [
   {
-    title: "The Architecture",
-    description: "Built on Next.js 14. Server-side rendering for instant load times and SEO dominance.",
-    icon: Code2,
+    category: "DIGITAL ARCHITECTURE",
+    items: [
+      "High-Performance Web Development",
+      "Generative Engine Optimization (GEO)",
+      "Technical SEO & Semantics",
+      "Interactive 3D Environments",
+    ],
+    icon: Globe,
     color: "text-blue-400",
   },
   {
-    title: "The Deployment",
-    description: "Vercel Edge Network. Your site lives globally, not on a single slow server.",
-    icon: Cloud,
-    color: "text-white",
+    category: "VISUAL ENGINEERING",
+    items: [
+      "Cinematic Videography",
+      "Editorial Photography",
+      "Brand Storytelling",
+      "Post-Production & VFX",
+    ],
+    icon: Camera,
+    color: "text-purple-400",
   },
   {
-    title: "The Backend",
-    description: "Google Firebase integration. Real-time databases, secure authentication, and scalable storage.",
-    icon: Database,
-    color: "text-yellow-400",
-  },
-  {
-    title: "The Security",
-    description: "Enterprise-grade protection. Automated backups and strict access control.",
-    icon: ShieldCheck,
+    category: "AUDIENCE WARFARE",
+    items: [
+      "Social Media Strategy",
+      "YouTube Channel Growth",
+      "Content Distribution Systems",
+      "Analytics & Conversion",
+    ],
+    icon: TrendingUp,
     color: "text-emerald-400",
   },
 ];
 
 export default function Services() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-32 px-6">
+    <div className="min-h-screen bg-zinc-950 text-white pt-32 px-6 pb-20">
       
       {/* Header */}
-      <div className="max-w-4xl mx-auto mb-20 text-center">
+      <div className="max-w-5xl mx-auto mb-24 text-center">
+        <motion.p 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="text-zinc-500 font-mono text-xs tracking-[0.3em] uppercase mb-4"
+        >
+          Capabilities & Systems
+        </motion.p>
         <motion.h1 
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-5xl md:text-7xl font-bold tracking-tighter mb-6"
+          className="text-5xl md:text-8xl font-bold tracking-tighter mb-8"
         >
-          THE <span className="text-zinc-500">SYSTEM.</span>
+          FULL STACK <br />
+          <span className="text-transparent bg-clip-text bg-gradient-to-b from-zinc-200 to-zinc-800">
+            DOMINANCE.
+          </span>
         </motion.h1>
         <motion.p 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.2 }}
-          className="text-xl text-zinc-400 max-w-2xl mx-auto"
+          className="text-xl text-zinc-400 max-w-2xl mx-auto leading-relaxed"
         >
-          We don't sell templates. We engineer bespoke digital environments using the freshest stack on the internet.
+          We don't just build websites; we build media companies. 
+          From the code that runs the engine to the content that fuels it.
         </motion.p>
       </div>
 
-      {/* The Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-8 pb-32">
-        {services.map((service, index) => (
+      {/* The Capabilities Grid */}
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mb-32">
+        {capabilities.map((cap, index) => (
           <motion.div
-            key={service.title}
+            key={cap.category}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: index * 0.1 }}
-            className="group p-8 md:p-12 rounded-3xl bg-zinc-900/50 border border-white/5 hover:border-white/20 transition-all hover:bg-zinc-900"
+            className="group p-8 rounded-3xl bg-zinc-900/30 border border-white/5 hover:border-white/10 transition-all hover:bg-zinc-900/50"
           >
-            <div className="mb-6 p-4 bg-zinc-950 rounded-2xl w-fit border border-white/5 group-hover:scale-110 transition-transform duration-300">
-              <service.icon size={32} className={service.color} />
+            <div className={`mb-6 p-4 rounded-2xl w-fit bg-black border border-white/5 ${cap.color}`}>
+              <cap.icon size={28} />
             </div>
             
-            <h3 className="text-2xl font-bold mb-4">{service.title}</h3>
-            <p className="text-zinc-400 leading-relaxed text-lg">
-              {service.description}
-            </p>
+            <h3 className="text-sm font-mono text-zinc-500 tracking-widest mb-6 border-b border-white/5 pb-4">
+              {cap.category}
+            </h3>
+
+            <ul className="space-y-4">
+              {cap.items.map((item) => (
+                <li key={item} className="flex items-center gap-3 text-zinc-300">
+                  <div className="w-1.5 h-1.5 rounded-full bg-zinc-700 group-hover:bg-white transition-colors" />
+                  {item}
+                </li>
+              ))}
+            </ul>
           </motion.div>
         ))}
-
-        {/* The "Command Line" Call to Action */}
-        <motion.div 
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          className="md:col-span-2 mt-8 p-8 bg-black rounded-xl border border-zinc-800 font-mono text-sm text-zinc-400"
-        >
-          <div className="flex gap-2 mb-4">
-            <div className="w-3 h-3 rounded-full bg-red-500" />
-            <div className="w-3 h-3 rounded-full bg-yellow-500" />
-            <div className="w-3 h-3 rounded-full bg-green-500" />
-          </div>
-          <p>$ init project --priority=high</p>
-          <p className="mt-2 text-white">
-            &gt; Ready to build? <a href="mailto:talormayde@gmail.com" className="text-blue-400 hover:underline">Contact Talormayde</a>
-            </p>
-          <p className="mt-2 text-emerald-500 animate-pulse">_</p>
-        </motion.div>
-
       </div>
+
+      {/* The "Tech Stack" Footer (Subtle Flex) */}
+      <motion.div 
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        className="max-w-4xl mx-auto border-t border-white/5 pt-16 text-center"
+      >
+        <p className="text-zinc-600 mb-8 font-mono text-sm">POWERED BY MODERN INFRASTRUCTURE</p>
+        <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-50 grayscale hover:grayscale-0 transition-all duration-500">
+          {["Next.js", "Vercel", "Firebase", "React", "Motion", "Tailwind"].map((tech) => (
+            <span key={tech} className="text-xl font-bold text-zinc-400">{tech}</span>
+          ))}
+        </div>
+      </motion.div>
+
+       {/* CTA */}
+       <div className="mt-32 text-center">
+         <p className="text-zinc-500 mb-4">Ready to scale?</p>
+         <Link href="mailto:talormayde@gmail.com" className="inline-block border border-white/20 px-8 py-4 rounded-full text-white hover:bg-white hover:text-black transition-all font-bold tracking-wide">
+           INITIATE PROJECT
+         </Link>
+       </div>
     </div>
   );
 }
