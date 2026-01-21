@@ -55,7 +55,7 @@ const LOGOS = [
 
 export default function TechTicker() {
   return (
-    <div className="w-full py-10 border-y border-white/5 bg-black/50 overflow-hidden relative z-10">
+    <div className="w-full py-10 border-y border-border-subtle bg-background/50 overflow-hidden relative z-10">
       
       {/* The Gradient Fade on sides */}
       <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-zinc-950 to-transparent z-20 pointer-events-none" />
@@ -76,7 +76,7 @@ export default function TechTicker() {
             <div key={i} className="flex items-center gap-24 group">
               {/* The Logo: Gray by default, White on hover */}
               <div 
-                className="text-zinc-800 transition-all duration-300 group-hover:text-white group-hover:scale-110 filter group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+                className="text-zinc-800 transition-all duration-300 group-hover:text-foreground group-hover:scale-110 filter group-hover:drop-shadow-[0_0_10px_rgba(255,255,255,0.5)]"
                 title={tech.name}
               >
                 {tech.icon}

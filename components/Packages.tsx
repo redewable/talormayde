@@ -59,10 +59,10 @@ export default function Packages() {
     <section className="py-20 px-6 max-w-7xl mx-auto font-sans">
       
       <div className="text-center mb-24 space-y-6">
-        <h2 className="text-4xl md:text-5xl font-light text-white tracking-tight">
+        <h2 className="text-4xl md:text-5xl font-light text-foreground tracking-tight">
           ENGAGEMENT MODELS
         </h2>
-        <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest max-w-md mx-auto">
+        <p className="text-muted-foreground text-xs font-mono uppercase tracking-widest max-w-md mx-auto">
           Transparent investments for scalable systems.
         </p>
       </div>
@@ -78,7 +78,7 @@ export default function Packages() {
             className={`relative p-10 rounded-3xl border flex flex-col transition-all duration-500 ${
               tier.popular 
                 ? "bg-white/5 border-white/20 shadow-2xl shadow-white/5" 
-                : "bg-black/20 border-white/5 hover:border-white/10"
+                : "bg-background/20 border-border-subtle hover:border-white/10"
             }`}
           >
             {/* Header */}
@@ -89,11 +89,11 @@ export default function Packages() {
                 <tier.icon strokeWidth={1} size={24} />
               </div>
               
-              <h3 className="text-xs font-mono text-zinc-500 uppercase tracking-widest mb-4">
+              <h3 className="text-xs font-mono text-muted-foreground uppercase tracking-widest mb-4">
                 {tier.name}
               </h3>
               
-              <div className="text-4xl font-light text-white mb-6">
+              <div className="text-4xl font-light text-foreground mb-6">
                 {tier.price}
               </div>
               
@@ -106,7 +106,7 @@ export default function Packages() {
             <ul className="space-y-4 mb-10 flex-grow">
               {tier.features.map((feat) => (
                 <li key={feat} className="flex items-start gap-4 text-sm text-zinc-300 font-light">
-                  <Check size={14} className={`mt-1 flex-shrink-0 ${tier.popular ? "text-white" : "text-zinc-600"}`} />
+                  <Check size={14} className={`mt-1 flex-shrink-0 ${tier.popular ? "text-foreground" : "text-zinc-600"}`} />
                   {feat}
                 </li>
               ))}
@@ -117,7 +117,7 @@ export default function Packages() {
               <button className={`w-full py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${
                 tier.popular 
                   ? "bg-white text-black hover:bg-zinc-200" 
-                  : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white hover:border-white"
+                  : "bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-foreground hover:border-white"
               }`}>
                 {tier.cta}
               </button>
@@ -128,8 +128,8 @@ export default function Packages() {
       </div>
 
       <div className="mt-24 text-center">
-        <p className="text-zinc-500 text-sm font-light">
-          Not sure where to start? <Link href="/contact" className="text-white border-b border-zinc-700 pb-0.5 hover:border-white transition-all ml-1">Start a Conversation</Link>
+        <p className="text-muted-foreground text-sm font-light">
+          Not sure where to start? <Link href="/contact" className="text-foreground border-b border-zinc-700 pb-0.5 hover:border-white transition-all ml-1">Start a Conversation</Link>
         </p>
       </div>
 

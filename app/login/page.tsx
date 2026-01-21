@@ -38,7 +38,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-white selection:text-black flex items-center justify-center p-6 relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-white selection:text-black flex items-center justify-center p-6 relative overflow-hidden">
       
       {/* Background Ambience */}
       <div className="opacity-40">
@@ -48,17 +48,17 @@ export default function Login() {
       <motion.div 
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="relative z-10 w-full max-w-md p-8 md:p-12 bg-black/20 backdrop-blur-xl border border-white/5 rounded-3xl shadow-2xl"
+        className="relative z-10 w-full max-w-md p-8 md:p-12 bg-background/20 backdrop-blur-xl border border-border-subtle rounded-3xl shadow-2xl"
       >
         <div className="text-center mb-12">
           <div className="w-16 mx-auto mb-6 opacity-80 invert">
             {/* Using your logo instead of a lock icon */}
             <img src="/talormayde-logo.png" alt="Logo" className="w-full h-auto" />
           </div>
-          <h1 className="text-2xl font-light tracking-[0.2em] uppercase text-white mix-blend-overlay">
+          <h1 className="text-2xl font-light tracking-[0.2em] uppercase text-foreground mix-blend-overlay">
             The Atelier
           </h1>
-          <p className="text-zinc-500 text-xs font-mono tracking-widest uppercase mt-3">
+          <p className="text-muted-foreground text-xs font-mono tracking-widest uppercase mt-3">
             Private Client Access
           </p>
         </div>
@@ -66,7 +66,7 @@ export default function Login() {
         <form onSubmit={handleLogin} className="space-y-8">
           
           <div className="space-y-2 group">
-            <label className="text-xs font-mono text-zinc-500 uppercase tracking-widest group-focus-within:text-white transition-colors">
+            <label className="text-xs font-mono text-muted-foreground uppercase tracking-widest group-focus-within:text-foreground transition-colors">
                 Identity
             </label>
             <input 
@@ -74,12 +74,12 @@ export default function Login() {
               placeholder="email@address.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full bg-transparent border-b border-zinc-800 py-3 text-lg font-light text-white outline-none focus:border-white transition-all placeholder:text-zinc-800"
+              className="w-full bg-transparent border-b border-zinc-800 py-3 text-lg font-light text-foreground outline-none focus:border-white transition-all placeholder:text-zinc-800"
             />
           </div>
           
           <div className="space-y-2 group">
-            <label className="text-xs font-mono text-zinc-500 uppercase tracking-widest group-focus-within:text-white transition-colors">
+            <label className="text-xs font-mono text-muted-foreground uppercase tracking-widest group-focus-within:text-foreground transition-colors">
                 Key
             </label>
             <input 
@@ -87,7 +87,7 @@ export default function Login() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full bg-transparent border-b border-zinc-800 py-3 text-lg font-light text-white outline-none focus:border-white transition-all placeholder:text-zinc-800"
+              className="w-full bg-transparent border-b border-zinc-800 py-3 text-lg font-light text-foreground outline-none focus:border-white transition-all placeholder:text-zinc-800"
             />
           </div>
 

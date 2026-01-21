@@ -6,7 +6,7 @@ import LivingCanvas from "@/components/LivingCanvas";
 
 export default function Privacy() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-white selection:text-black pt-32 px-6 pb-20 relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-white selection:text-black pt-32 px-6 pb-20 relative overflow-hidden">
       
       {/* Background Ambience */}
       <div className="fixed inset-0 pointer-events-none opacity-30">
@@ -19,10 +19,10 @@ export default function Privacy() {
         <div className="mb-24 text-center space-y-6">
           <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/20 to-transparent mx-auto mb-8" />
           
-          <h1 className="text-4xl md:text-6xl font-light tracking-tight text-white mix-blend-overlay">
+          <h1 className="text-4xl md:text-6xl font-light tracking-tight text-foreground mix-blend-overlay">
             PRIVACY POLICY
           </h1>
-          <p className="text-zinc-500 text-xs font-mono tracking-[0.2em] uppercase max-w-lg mx-auto leading-relaxed">
+          <p className="text-muted-foreground text-xs font-mono tracking-[0.2em] uppercase max-w-lg mx-auto leading-relaxed">
             Effective Date: {new Date().toLocaleDateString(undefined, { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -31,8 +31,8 @@ export default function Privacy() {
         <div className="space-y-16 leading-relaxed text-zinc-400 font-light">
           
           <section className="space-y-6">
-            <h3 className="text-white text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-white/5 pb-4">
-              <FileText size={14} className="text-zinc-500" /> 1. Information Collection
+            <h3 className="text-foreground text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-border-subtle pb-4">
+              <FileText size={14} className="text-muted-foreground" /> 1. Information Collection
             </h3>
             <p>
               Talormayde Studio collects information necessary to provide our design and development services. 
@@ -45,7 +45,7 @@ export default function Privacy() {
                 "Project Specifications",
                 "Billing Details (via Stripe)"
               ].map((item, i) => (
-                <li key={i} className="flex items-center gap-3 text-sm text-zinc-300 bg-white/5 p-4 rounded-lg border border-white/5">
+                <li key={i} className="flex items-center gap-3 text-sm text-zinc-300 bg-white/5 p-4 rounded-lg border border-border-subtle">
                   <div className="w-1 h-1 bg-white rounded-full" />
                   {item}
                 </li>
@@ -54,8 +54,8 @@ export default function Privacy() {
           </section>
 
           <section className="space-y-6">
-            <h3 className="text-white text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-white/5 pb-4">
-              <Lock size={14} className="text-zinc-500" /> 2. Security & Storage
+            <h3 className="text-foreground text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-border-subtle pb-4">
+              <Lock size={14} className="text-muted-foreground" /> 2. Security & Storage
             </h3>
             <p>
               We value discretion. Your data is encrypted and stored securely using enterprise-grade infrastructure (Google Cloud Platform). 
@@ -64,8 +64,8 @@ export default function Privacy() {
           </section>
 
           <section className="space-y-6">
-            <h3 className="text-white text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-white/5 pb-4">
-              <Eye size={14} className="text-zinc-500" /> 3. Usage of Information
+            <h3 className="text-foreground text-sm font-mono uppercase tracking-widest flex items-center gap-3 border-b border-border-subtle pb-4">
+              <Eye size={14} className="text-muted-foreground" /> 3. Usage of Information
             </h3>
             <p>
               Information is used strictly for the purpose of:
@@ -77,14 +77,14 @@ export default function Privacy() {
             </ul>
           </section>
 
-          <section className="p-8 bg-black/40 border border-white/5 rounded-2xl backdrop-blur-sm">
-            <h3 className="text-white text-xs font-mono uppercase tracking-widest mb-4 flex items-center gap-2">
+          <section className="p-8 bg-background/40 border border-border-subtle rounded-2xl backdrop-blur-sm">
+            <h3 className="text-foreground text-xs font-mono uppercase tracking-widest mb-4 flex items-center gap-2">
                <ShieldCheck size={14} /> Your Rights
             </h3>
             <p className="mb-6 text-sm">
               You maintain the right to access, correct, or delete your personal information from our records at any time.
             </p>
-            <Link href="/contact" className="inline-flex items-center gap-2 text-white border-b border-white/20 pb-1 hover:border-white transition-all text-xs uppercase tracking-widest">
+            <Link href="/contact" className="inline-flex items-center gap-2 text-foreground border-b border-white/20 pb-1 hover:border-white transition-all text-xs uppercase tracking-widest">
               Contact Privacy Officer &rarr;
             </Link>
           </section>
@@ -92,7 +92,7 @@ export default function Privacy() {
         </div>
 
         {/* Footer */}
-        <div className="mt-32 pt-8 border-t border-white/5 text-center">
+        <div className="mt-32 pt-8 border-t border-border-subtle text-center">
             <p className="text-[10px] text-zinc-600 font-mono uppercase tracking-widest">
                 Talormayde Studio © {new Date().getFullYear()}
             </p>

@@ -40,16 +40,16 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
       <motion.div 
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
         onClick={onClose}
-        className="absolute inset-0 bg-black/95 backdrop-blur-xl cursor-pointer"
+        className="absolute inset-0 bg-background/95 backdrop-blur-xl cursor-pointer"
       />
 
       {/* Modal Container */}
       <motion.div 
         layoutId={`card-${project.id}`}
-        className="relative w-full max-w-7xl max-h-[90vh] bg-zinc-950 border border-white/10 shadow-2xl overflow-y-auto custom-scrollbar"
+        className="relative w-full max-w-7xl max-h-[90vh] bg-background border border-white/10 shadow-2xl overflow-y-auto custom-scrollbar"
       >
         {/* Close Button */}
-        <button onClick={onClose} className="absolute top-6 right-6 z-50 p-2 bg-black/50 rounded-full text-white hover:bg-white hover:text-black transition-colors border border-white/10">
+        <button onClick={onClose} className="absolute top-6 right-6 z-50 p-2 bg-background/50 rounded-full text-foreground hover:bg-white hover:text-black transition-colors border border-white/10">
             <X size={20} />
         </button>
 
@@ -71,7 +71,7 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
                 )}
                 
                 {/* Subtle Orientation Label */}
-                <div className="absolute bottom-6 left-6 px-3 py-1 bg-black/50 backdrop-blur-md border border-white/10 rounded-full flex items-center gap-2 text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
+                <div className="absolute bottom-6 left-6 px-3 py-1 bg-background/50 backdrop-blur-md border border-white/10 rounded-full flex items-center gap-2 text-[10px] font-mono text-zinc-400 uppercase tracking-widest">
                     {project.orientation === 'portrait' && <><Smartphone size={10}/> Mobile View</>}
                     {project.orientation === 'landscape' && <><Monitor size={10}/> Cinematic</>}
                     {(!project.orientation || project.orientation === 'square') && <><SquareIcon size={10}/> Standard</>}
@@ -87,7 +87,7 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
                         <span className="text-emerald-500 text-[10px] font-mono uppercase tracking-[0.3em] mb-4 block">
                             {project.category}
                         </span>
-                        <h2 className="text-4xl md:text-6xl font-light text-white tracking-tight leading-none">
+                        <h2 className="text-4xl md:text-6xl font-light text-foreground tracking-tight leading-none">
                             {project.title}
                         </h2>
                     </div>
@@ -110,14 +110,14 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
                         </h4>
                         <div className="flex flex-wrap gap-2">
                             {project.tech.split(',').map((t, i) => (
-                                <span key={i} className="text-[10px] font-mono text-zinc-300 border border-white/5 bg-white/5 px-3 py-1.5 rounded-sm whitespace-nowrap">
+                                <span key={i} className="text-[10px] font-mono text-zinc-300 border border-border-subtle bg-white/5 px-3 py-1.5 rounded-sm whitespace-nowrap">
                                     {t.trim()}
                                 </span>
                             ))}
                         </div>
                     </div>
 
-                    <div className="pt-8 border-t border-white/5">
+                    <div className="pt-8 border-t border-border-subtle">
                         {project.url ? (
                             <Link href={project.url} target="_blank" className="block">
                                 <button className="w-full py-5 bg-white text-black font-bold uppercase tracking-[0.2em] text-[10px] hover:bg-zinc-200 transition-all flex items-center justify-center gap-2 group">
@@ -125,7 +125,7 @@ export default function ProjectModal({ project, onClose }: { project: Project; o
                                 </button>
                             </Link>
                         ) : (
-                            <div className="w-full py-5 bg-zinc-900 text-zinc-600 font-mono uppercase tracking-widest text-[10px] text-center border border-white/5 cursor-not-allowed">
+                            <div className="w-full py-5 bg-zinc-900 text-zinc-600 font-mono uppercase tracking-widest text-[10px] text-center border border-border-subtle cursor-not-allowed">
                                 Private Case Study
                             </div>
                         )}

@@ -28,7 +28,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
 
   return (
     <motion.div
-      className="fixed inset-0 z-[9999] bg-zinc-950 text-white flex flex-col items-center justify-center cursor-wait"
+      className="fixed inset-0 z-[9999] bg-background text-foreground flex flex-col items-center justify-center cursor-wait"
       initial={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       transition={{ duration: 1, ease: "easeInOut" }}
@@ -73,7 +73,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         </div>
 
         <div className="flex flex-col items-center gap-1">
-            <p className="text-[9px] font-mono text-zinc-500 tracking-[0.4em] uppercase">
+            <p className="text-[9px] font-mono text-muted-foreground tracking-[0.4em] uppercase">
               {count === 100 ? "Studio Ready" : "Initializing Atelier"}
             </p>
             <span className="text-[10px] font-mono text-zinc-700">{count}%</span>

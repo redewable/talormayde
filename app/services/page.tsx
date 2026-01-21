@@ -44,7 +44,7 @@ const capabilities = [
 
 export default function Services() {
   return (
-    <div className="min-h-screen bg-zinc-950 text-white pt-32 pb-20 relative overflow-hidden font-sans selection:bg-white selection:text-black">
+    <div className="min-h-screen bg-background text-foreground pt-32 pb-20 relative overflow-hidden font-sans selection:bg-white selection:text-black">
       
       {/* Background Ambience */}
       <div className="fixed inset-0 pointer-events-none opacity-30">
@@ -62,12 +62,12 @@ export default function Services() {
             >
                 <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-white/20 to-transparent mx-auto mb-8" />
                 
-                <h1 className="text-5xl md:text-8xl font-light tracking-tight text-white mix-blend-overlay">
+                <h1 className="text-5xl md:text-8xl font-light tracking-tight text-foreground mix-blend-overlay">
                     CAPABILITIES
                 </h1>
                 <p className="text-zinc-400 text-sm md:text-base font-mono tracking-[0.2em] uppercase max-w-2xl mx-auto leading-loose">
                     We do not just build websites.<br/>
-                    We engineer <span className="text-white border-b border-white/20 pb-1">digital ecosystems</span>.
+                    We engineer <span className="text-foreground border-b border-white/20 pb-1">digital ecosystems</span>.
                 </p>
             </motion.div>
         </div>
@@ -81,19 +81,19 @@ export default function Services() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: index * 0.1 }}
-                className="group p-10 rounded-3xl bg-black/20 border border-white/5 hover:border-white/10 transition-all hover:bg-black/40 backdrop-blur-sm"
+                className="group p-10 rounded-3xl bg-background/20 border border-border-subtle hover:border-white/10 transition-all hover:bg-background/40 backdrop-blur-sm"
             >
-                <div className={`mb-8 p-4 rounded-full w-fit bg-white/5 border border-white/5 ${cap.color} group-hover:bg-white/10 transition-colors`}>
+                <div className={`mb-8 p-4 rounded-full w-fit bg-white/5 border border-border-subtle ${cap.color} group-hover:bg-white/10 transition-colors`}>
                     <cap.icon strokeWidth={1} size={32} />
                 </div>
                 
-                <h3 className="text-xs font-mono text-zinc-500 tracking-widest mb-8 border-b border-white/5 pb-4 uppercase">
+                <h3 className="text-xs font-mono text-muted-foreground tracking-widest mb-8 border-b border-border-subtle pb-4 uppercase">
                     {cap.category}
                 </h3>
 
                 <ul className="space-y-6">
                 {cap.items.map((item) => (
-                    <li key={item} className="flex items-center gap-4 text-zinc-300 font-light group-hover:text-white transition-colors">
+                    <li key={item} className="flex items-center gap-4 text-zinc-300 font-light group-hover:text-foreground transition-colors">
                         <div className="w-1 h-1 rounded-full bg-zinc-600 group-hover:bg-white transition-colors" />
                         {item}
                     </li>
@@ -107,12 +107,12 @@ export default function Services() {
             <Methodology />
 
         {/* --- PACKAGES SECTION (Wrapped to match style) --- */}
-        <div className="relative z-10 border-t border-white/5 pt-32">
+        <div className="relative z-10 border-t border-border-subtle pt-32">
              <Packages />
         </div>
 
         {/* --- FAQ SECTION (Wrapped to match style) --- */}
-        <div className="relative z-10 border-t border-white/5 pt-32">
+        <div className="relative z-10 border-t border-border-subtle pt-32">
              <FAQ />
         </div>
 

@@ -31,20 +31,20 @@ export default function BlogPost() {
   }, [id]);
 
   if (loading) return (
-    <div className="min-h-screen bg-zinc-950 flex items-center justify-center text-zinc-500 font-mono text-xs uppercase tracking-widest">
+    <div className="min-h-screen bg-background flex items-center justify-center text-muted-foreground font-mono text-xs uppercase tracking-widest">
       Retrieving Entry...
     </div>
   );
 
   if (!post) return (
-    <div className="min-h-screen bg-zinc-950 flex flex-col items-center justify-center text-white space-y-4">
+    <div className="min-h-screen bg-background flex flex-col items-center justify-center text-foreground space-y-4">
       <h1 className="text-2xl font-light">Entry Not Found</h1>
-      <Link href="/journal" className="text-zinc-500 hover:text-white text-xs uppercase tracking-widest border-b border-zinc-700 pb-1">Return to Archive</Link>
+      <Link href="/journal" className="text-muted-foreground hover:text-foreground text-xs uppercase tracking-widest border-b border-zinc-700 pb-1">Return to Archive</Link>
     </div>
   );
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-white font-sans selection:bg-white selection:text-black relative overflow-hidden">
+    <div className="min-h-screen bg-background text-foreground font-sans selection:bg-white selection:text-black relative overflow-hidden">
       
       {/* Background Ambience - Dimmed significantly for reading */}
       <div className="fixed inset-0 pointer-events-none opacity-20">
@@ -55,7 +55,7 @@ export default function BlogPost() {
         
         {/* Navigation */}
         <div className="mb-12">
-            <Link href="/journal" className="group inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors text-xs font-mono uppercase tracking-widest">
+            <Link href="/journal" className="group inline-flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors text-xs font-mono uppercase tracking-widest">
                 <ArrowLeft size={12} className="group-hover:-translate-x-1 transition-transform" /> 
                 Back to Journal
             </Link>
@@ -67,20 +67,20 @@ export default function BlogPost() {
                 <span className="px-3 py-1 border border-emerald-500/20 rounded-full bg-emerald-500/5">
                     {post.category || "Uncategorized"}
                 </span>
-                <span className="flex items-center gap-2 text-zinc-500">
+                <span className="flex items-center gap-2 text-muted-foreground">
                     <Calendar size={12} />
                     {new Date(post.date).toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' })}
                 </span>
             </div>
 
-            <h1 className="text-4xl md:text-6xl font-light leading-tight text-white">
+            <h1 className="text-4xl md:text-6xl font-light leading-tight text-foreground">
                 {post.title}
             </h1>
         </header>
 
         {/* Hero Image */}
         {post.imageUrl && (
-            <div className="w-full aspect-video bg-zinc-900 mb-16 rounded-sm overflow-hidden border border-white/5">
+            <div className="w-full aspect-video bg-zinc-900 mb-16 rounded-sm overflow-hidden border border-border-subtle">
                 <img src={post.imageUrl} alt={post.title} className="w-full h-full object-cover opacity-90" />
             </div>
         )}
@@ -96,11 +96,11 @@ export default function BlogPost() {
         </article>
 
         {/* Footer / Share */}
-        <div className="mt-20 pt-8 border-t border-white/5 flex justify-between items-center">
+        <div className="mt-20 pt-8 border-t border-border-subtle flex justify-between items-center">
             <p className="text-zinc-600 font-mono text-xs uppercase tracking-widest">
                 End of Entry
             </p>
-            <button className="text-zinc-500 hover:text-white transition-colors flex items-center gap-2 text-xs font-mono uppercase tracking-widest">
+            <button className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2 text-xs font-mono uppercase tracking-widest">
                 <Share2 size={14} /> Share
             </button>
         </div>

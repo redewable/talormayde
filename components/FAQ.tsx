@@ -33,25 +33,25 @@ export default function FAQ() {
     <section className="py-20 px-6 max-w-3xl mx-auto font-sans">
       
       <div className="mb-20 text-center space-y-4">
-        <h2 className="text-3xl md:text-4xl font-light text-white tracking-tight">INQUIRIES</h2>
-        <p className="text-zinc-500 text-xs font-mono uppercase tracking-widest">
+        <h2 className="text-3xl md:text-4xl font-light text-foreground tracking-tight">INQUIRIES</h2>
+        <p className="text-muted-foreground text-xs font-mono uppercase tracking-widest">
             Details regarding the process
         </p>
       </div>
 
       <div className="space-y-4">
         {QUESTIONS.map((item, i) => (
-          <div key={i} className="border-b border-white/5 overflow-hidden">
+          <div key={i} className="border-b border-border-subtle overflow-hidden">
             
             <button
               onClick={() => setOpenIndex(openIndex === i ? null : i)}
               className="w-full flex items-center justify-between py-6 text-left hover:opacity-70 transition-opacity group"
             >
-              <span className={`text-lg font-light transition-colors ${openIndex === i ? "text-white" : "text-zinc-400 group-hover:text-zinc-200"}`}>
+              <span className={`text-lg font-light transition-colors ${openIndex === i ? "text-foreground" : "text-zinc-400 group-hover:text-zinc-200"}`}>
                 {item.q}
               </span>
               <div className={`transition-transform duration-300 ${openIndex === i ? "rotate-180" : "rotate-0"}`}>
-                 {openIndex === i ? <Minus size={14} className="text-white"/> : <Plus size={14} className="text-zinc-600"/>}
+                 {openIndex === i ? <Minus size={14} className="text-foreground"/> : <Plus size={14} className="text-zinc-600"/>}
               </div>
             </button>
 
@@ -63,7 +63,7 @@ export default function FAQ() {
                   exit={{ height: 0, opacity: 0 }}
                   transition={{ duration: 0.4, ease: [0.04, 0.62, 0.23, 0.98] }}
                 >
-                  <div className="pb-8 text-zinc-500 leading-relaxed font-light text-sm max-w-2xl">
+                  <div className="pb-8 text-muted-foreground leading-relaxed font-light text-sm max-w-2xl">
                     {item.a}
                   </div>
                 </motion.div>

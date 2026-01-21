@@ -25,15 +25,15 @@ const STEPS = [
 
 export default function Methodology() {
   return (
-    <section className="py-32 px-6 max-w-7xl mx-auto border-t border-white/5">
+    <section className="py-32 px-6 max-w-7xl mx-auto border-t border-border-subtle">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center">
         
         {/* Left: The Manifesto */}
         <div>
-          <h2 className="text-4xl md:text-5xl font-light tracking-tight mb-6 text-white">
+          <h2 className="text-4xl md:text-5xl font-light tracking-tight mb-6 text-foreground">
             THE METHOD
           </h2>
-          <p className="text-zinc-500 text-lg font-light leading-relaxed max-w-md">
+          <p className="text-muted-foreground text-lg font-light leading-relaxed max-w-md">
             Complexity is the enemy of beauty. <br/>
             We have refined our process into a linear, lucid workflow.
           </p>
@@ -56,9 +56,9 @@ export default function Methodology() {
                 </div>
               </div>
               <div>
-                <span className="text-xs font-mono text-zinc-600 tracking-widest uppercase mb-2 block group-hover:text-white transition-colors">{step.number}</span>
-                <h3 className="text-xl font-light text-white mb-2">{step.title}</h3>
-                <p className="text-zinc-500 leading-relaxed text-sm font-light">
+                <span className="text-xs font-mono text-zinc-600 tracking-widest uppercase mb-2 block group-hover:text-foreground transition-colors">{step.number}</span>
+                <h3 className="text-xl font-light text-foreground mb-2">{step.title}</h3>
+                <p className="text-muted-foreground leading-relaxed text-sm font-light">
                   {step.desc}
                 </p>
               </div>
