@@ -62,19 +62,19 @@ export default function Home() {
             <div className="mb-12">
                 <h2 className="text-4xl md:text-6xl font-light tracking-tight mb-4">THE MEDIUM</h2>
                 <p className="text-muted-foreground text-lg font-light max-w-md">
-                   We treat code like poetry and pixels like paint.
+                   Every detail considered. Every element intentional.
                 </p>
             </div>
             
             {/* SPRUCED UP GRID */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
                 {[
-                    { icon: Palette, title: "Art Direction", desc: "Defining the visual soul.", index: "01" },
-                    { icon: Code2, title: "Craftsmanship", desc: "Hand-coded engines.", index: "02" },
-                    { icon: Maximize2, title: "Expansion", desc: "Systems that scale.", index: "03" },
-                    { icon: Move, title: "Motion", desc: "Interfaces that breathe.", index: "04" },
-                    { icon: Layers, title: "Architecture", desc: "Full-stack foundations.", index: "05" },
-                    { icon: PenTool, title: "Identity", desc: "Marks that leave a legacy.", index: "06" }
+                    { icon: Palette, title: "Visual Identity", desc: "A look that's unmistakably yours.", index: "01" },
+                    { icon: Code2, title: "Digital Presence", desc: "Built to perform, designed to impress.", index: "02" },
+                    { icon: Maximize2, title: "Growth", desc: "Foundations that scale with your ambition.", index: "03" },
+                    { icon: Move, title: "Experience", desc: "Interactions that feel alive.", index: "04" },
+                    { icon: Layers, title: "Discovery", desc: "Found when it matters most.", index: "05" },
+                    { icon: PenTool, title: "Story", desc: "Your narrative, told beautifully.", index: "06" }
                 ].map((s, i) => (
                     <div key={i} className="group relative bg-background/40 border border-border-subtle p-10 hover:bg-foreground/5 transition-colors duration-500">
                         <div className="flex justify-between items-start mb-8">
