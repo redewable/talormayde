@@ -1,7 +1,9 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Check, Gem, Crown, Sparkles } from "lucide-react";
 import Link from "next/link";
+import PackageModal from "./PackageModal";
 
 const TIERS = [
   {
@@ -58,6 +60,8 @@ const TIERS = [
 ];
 
 export default function Packages() {
+  const [selectedTier, setSelectedTier] = useState<string | null>(null);
+
   return (
     <section className="py-20 px-6 max-w-7xl mx-auto font-sans">
       {/* Header */}
@@ -86,7 +90,7 @@ export default function Packages() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: i * 0.1 }}
-            className={`relative p-10 lg:p-12 rounded-sm border flex flex-col transition-all duration-500 ${
+            className={`group relative p-10 lg:p-12 rounded-sm border flex flex-col transition-all duration-500 ${
               tier.popular
                 ? "bg-foreground/[0.03] border-foreground/20 shadow-2xl shadow-foreground/5"
                 : "bg-background/20 border-border-subtle hover:border-foreground/10"
@@ -136,12 +140,12 @@ export default function Packages() {
               {tier.features.map((feat) => (
                 <li
                   key={feat}
-                  className="flex items-start gap-4 text-sm text-zinc-400 font-light"
+                  className="flex items-start gap-4 text-sm text-muted-foreground font-light"
                 >
                   <Check
                     size={14}
                     className={`mt-1 flex-shrink-0 ${
-                      tier.popular ? "text-foreground" : "text-zinc-600"
+                      tier.popular ? "text-foreground" : "text-muted-foreground/50"
                     }`}
                   />
                   <span className="leading-relaxed">{feat}</span>
@@ -156,18 +160,29 @@ export default function Packages() {
               </p>
             </div>
 
-            {/* CTA Button */}
-            <Link href="/contact" className="w-full">
+            {/* Buttons Container */}
+            <div className="space-y-3">
+              {/* CTA Button */}
+              <Link href="/contact" className="w-full block">
+                <button
+                  className={`w-full py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${
+                    tier.popular
+                      ? "bg-foreground text-background hover:bg-foreground/90"
+                      : "bg-foreground/5 text-muted-foreground border border-border-subtle hover:text-foreground hover:border-foreground/30"
+                  }`}
+                >
+                  {tier.cta}
+                </button>
+              </Link>
+
+              {/* Learn More Button */}
               <button
-                className={`w-full py-4 rounded-full text-xs font-bold uppercase tracking-widest transition-all ${
-                  tier.popular
-                    ? "bg-foreground text-background hover:bg-foreground/90"
-                    : "bg-foreground/5 text-muted-foreground border border-border-subtle hover:text-foreground hover:border-foreground/30"
-                }`}
+                onClick={() => setSelectedTier(tier.name)}
+                className="w-full py-3 text-[10px] font-mono text-muted-foreground/50 uppercase tracking-widest hover:text-muted-foreground transition-colors"
               >
-                {tier.cta}
+                What&apos;s included →
               </button>
-            </Link>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -189,6 +204,14 @@ export default function Packages() {
           </Link>
         </p>
       </motion.div>
+
+      {/* Package Modal */}
+      {selectedTier && (
+        <PackageModal 
+          tierName={selectedTier} 
+          onClose={() => setSelectedTier(null)} 
+        />
+      )}
     </section>
   );
 }

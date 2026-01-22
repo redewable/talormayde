@@ -1,5 +1,5 @@
 "use client";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore"; 
@@ -48,7 +48,6 @@ export default function Projects() {
   };
 
   return (
-    /* REMOVED bg-background/bg-background. Using transparent to see global bg */
     <section className="py-32 px-6 max-w-7xl mx-auto border-t border-border-subtle bg-transparent" id="work">
       
       <div className="flex justify-between items-end mb-20">
@@ -70,8 +69,11 @@ export default function Projects() {
         ) : (
           projects.map((project, i) => (
             <motion.div
-              layoutId={`card-${project.id}`}
               key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
               onClick={() => setSelectedProject(project)}
               className={`group cursor-pointer relative bg-foreground/5 border border-border-subtle overflow-hidden ${getGridClasses(project.orientation)}`}
             >
@@ -108,11 +110,13 @@ export default function Projects() {
         )}
       </div>
 
-      <AnimatePresence>
-        {selectedProject && (
-          <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />
-        )}
-      </AnimatePresence>
+      {/* Project Modal */}
+      {selectedProject && (
+        <ProjectModal 
+          project={selectedProject} 
+          onClose={() => setSelectedProject(null)} 
+        />
+      )}
     </section>
   );
 }

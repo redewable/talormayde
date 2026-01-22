@@ -1,11 +1,24 @@
 "use client";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowRight, PenTool, Move, Maximize2, Palette, Code2, Layers } from "lucide-react";
 import Link from "next/link";
 import Projects from "@/components/Projects"; 
 import LivingCanvas from "@/components/LivingCanvas";
+import MediumModal from "@/components/MediumModal";
+
+const MEDIUM_ITEMS = [
+  { icon: Palette, title: "Visual Identity", desc: "A look that's unmistakably yours.", index: "01" },
+  { icon: Code2, title: "Digital Presence", desc: "Built to perform, designed to impress.", index: "02" },
+  { icon: Maximize2, title: "Growth", desc: "Foundations that scale with your ambition.", index: "03" },
+  { icon: Move, title: "Experience", desc: "Interactions that feel alive.", index: "04" },
+  { icon: Layers, title: "Discovery", desc: "Found when it matters most.", index: "05" },
+  { icon: PenTool, title: "Story", desc: "Your narrative, told beautifully.", index: "06" }
+];
 
 export default function Home() {
+  const [selectedMedium, setSelectedMedium] = useState<string | null>(null);
+
   return (
     <div className="bg-background text-foreground min-h-screen font-sans overflow-x-hidden">
       
@@ -18,7 +31,6 @@ export default function Home() {
             <img 
               src="/talormayde-logo.png" 
               alt="Talormayde" 
-              /* Cleaned class list */
               className="adaptive-logo w-full h-auto drop-shadow-2xl" 
             />
           </div>
@@ -41,22 +53,32 @@ export default function Home() {
         </div>
       </section>
 
-      {/* SECTION 2: MANIFESTO - TIGHTENED (py-12) */}
-      <section className="py-12 px-6 bg-transparent relative z-10 border-t border-border-subtle">
-        <div className="max-w-3xl mx-auto text-center space-y-8">
-            <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-border-subtle to-transparent mx-auto" />
-            <h2 className="text-2xl md:text-3xl font-light leading-relaxed">
-                &quot;I am not a painter, so I paint.<br/>
-                I am not a coder, so I code.&quot;<br/>
-                We think, speak, and build <span className="border-b border-foreground/20 pb-1">outside of the box</span>.
-            </h2>
+      {/* SECTION 2: MANIFESTO */}
+      <section className="py-20 md:py-32 px-6 bg-transparent relative z-10 border-t border-border-subtle">
+        <div className="max-w-4xl mx-auto text-center">
+            <div className="w-[1px] h-12 bg-gradient-to-b from-transparent via-border-subtle to-transparent mx-auto mb-12" />
+            
+            {/* The Quote - Elegant Serif Italic */}
+            <blockquote className="mb-8">
+              <p className="font-serif italic text-2xl md:text-4xl lg:text-5xl font-light leading-relaxed md:leading-relaxed text-foreground">
+                As The Creator of Heaven and Earth, <br />
+                God designed us in His own Image.<br className="hidden sm:block" />
+                We create to inspire others to do the same.
+              </p>
+              <span className="block mt-6 text-burgandy-500 text-sm md:text-base font-mono tracking-widest">
+                #talormayde
+              </span>
+            </blockquote>
+
+            
+            <div className="w-[1px] h-12 bg-gradient-to-b from-border-subtle via-transparent to-transparent mx-auto mt-12" />
         </div>
       </section>
 
       {/* SECTION 3: PROJECTS */}
       <Projects />
 
-      {/* SECTION 4: THE MEDIUM - BENTO GRID */}
+      {/* SECTION 4: THE MEDIUM - CLICKABLE GRID */}
       <section className="py-24 px-6 bg-transparent border-t border-border-subtle relative z-10">
         <div className="max-w-7xl mx-auto">
             <div className="mb-12">
@@ -66,26 +88,28 @@ export default function Home() {
                 </p>
             </div>
             
-            {/* SPRUCED UP GRID */}
+            {/* CLICKABLE GRID */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-1">
-                {[
-                    { icon: Palette, title: "Visual Identity", desc: "A look that's unmistakably yours.", index: "01" },
-                    { icon: Code2, title: "Digital Presence", desc: "Built to perform, designed to impress.", index: "02" },
-                    { icon: Maximize2, title: "Growth", desc: "Foundations that scale with your ambition.", index: "03" },
-                    { icon: Move, title: "Experience", desc: "Interactions that feel alive.", index: "04" },
-                    { icon: Layers, title: "Discovery", desc: "Found when it matters most.", index: "05" },
-                    { icon: PenTool, title: "Story", desc: "Your narrative, told beautifully.", index: "06" }
-                ].map((s, i) => (
-                    <div key={i} className="group relative bg-background/40 border border-border-subtle p-10 hover:bg-foreground/5 transition-colors duration-500">
+                {MEDIUM_ITEMS.map((s, i) => (
+                    <button
+                        key={i}
+                        onClick={() => setSelectedMedium(s.title)}
+                        className="group relative bg-background/40 border border-border-subtle p-10 hover:bg-foreground/5 transition-all duration-500 text-left cursor-pointer"
+                    >
                         <div className="flex justify-between items-start mb-8">
                             <div className="p-3 rounded-lg text-muted-foreground group-hover:text-foreground transition-colors">
                                 <s.icon strokeWidth={1} size={28} />
                             </div>
-                            <span className="text-[10px] font-mono text-muted-foreground/30">{s.index}</span>
+                            <span className="text-[10px] font-mono text-muted-foreground/30 group-hover:text-muted-foreground/60 transition-colors">{s.index}</span>
                         </div>
                         <h3 className="text-xl font-light mb-2 text-foreground">{s.title}</h3>
                         <p className="text-muted-foreground text-sm font-light leading-relaxed">{s.desc}</p>
-                    </div>
+                        
+                        {/* Hover indicator */}
+                        <div className="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                            <span className="text-[9px] font-mono text-muted-foreground/50 uppercase tracking-widest">Learn more</span>
+                        </div>
+                    </button>
                 ))}
             </div>
         </div>
@@ -110,6 +134,14 @@ export default function Home() {
             </div>
         </div>
       </section>
+
+      {/* MEDIUM MODAL */}
+      {selectedMedium && (
+        <MediumModal 
+          itemTitle={selectedMedium} 
+          onClose={() => setSelectedMedium(null)} 
+        />
+      )}
     </div>
   );
 }

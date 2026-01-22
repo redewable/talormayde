@@ -33,9 +33,36 @@
   --color-background: #ffffff !important;
   --color-foreground: #18181b !important;
   --color-muted-foreground: #52525b !important;
-  --color-border-subtle: rgba(0, 0, 0, 0.08) !important;
-  --color-glass: rgba(255, 255, 255, 0.6) !important;
+  --color-border-subtle: rgba(0, 0, 0, 0.10) !important;
+  --color-glass: rgba(255, 255, 255, 0.7) !important;
 }
+
+/* --- 2b. LIGHT MODE CONTRAST FIXES --- */
+/* Boost contrast for hardcoded zinc colors on white backgrounds */
+.light .text-zinc-200 { color: #3f3f46 !important; }
+.light .text-zinc-300 { color: #3f3f46 !important; }
+.light .text-zinc-400 { color: #52525b !important; }
+.light .text-zinc-500 { color: #52525b !important; }
+.light .text-zinc-600 { color: #71717a !important; }
+.light .text-zinc-700 { color: #71717a !important; }
+.light .text-zinc-800 { color: #27272a !important; }
+
+/* Hover states in light mode */
+.light .hover\:text-zinc-200:hover { color: #18181b !important; }
+.light .hover\:text-zinc-300:hover { color: #18181b !important; }
+.light .hover\:text-zinc-400:hover { color: #27272a !important; }
+.light .group:hover .group-hover\:text-zinc-200 { color: #18181b !important; }
+.light .group:hover .group-hover\:text-zinc-300 { color: #18181b !important; }
+.light .group:hover .group-hover\:text-zinc-400 { color: #27272a !important; }
+
+/* Background adjustments for light mode */
+.light .bg-zinc-800 { background-color: #f4f4f5 !important; }
+.light .bg-zinc-900 { background-color: #e4e4e7 !important; }
+
+/* Border adjustments */
+.light .border-zinc-800 { border-color: #d4d4d8 !important; }
+.light .border-zinc-700 { border-color: #d4d4d8 !important; }
+.light .border-zinc-500 { border-color: #a1a1aa !important; }
 
 /* --- 3. BASE STYLES --- */
 @layer base {
@@ -100,17 +127,27 @@
   border: 1px solid var(--color-border-subtle);
 }
 
-/* --- 7. SCROLLBAR --- */
+.font-serif {
+  font-family: var(--font-cormorant), Georgia, serif;
+}
+
+/* --- 7. SCROLLBAR - On Brand --- */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--color-background);
+  background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 10px;
+  background: var(--color-border-subtle);
+  border-radius: 2px;
 }
-.light ::-webkit-scrollbar-thumb {
-  background: #a1a1aa;
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-muted-foreground);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border-subtle) transparent;
 }

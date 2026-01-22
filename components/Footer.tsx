@@ -41,7 +41,7 @@ export default function Footer() {
                 <div className="space-y-8">
                     <h4 className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground/60">Index</h4>
                     <nav className="flex flex-col gap-4 text-xs font-mono uppercase tracking-widest text-muted-foreground">
-                        <Link href="/" className="hover:text-foreground transition-colors">Main</Link>
+                        <Link href="/" className="hover:text-foreground transition-colors">Home</Link>
                         <Link href="/services" className="hover:text-foreground transition-colors">Capabilities</Link>
                         <Link href="/#work" className="hover:text-foreground transition-colors">The Collection</Link>
                         <Link href="/journal" className="hover:text-foreground transition-colors">Journal</Link>
@@ -89,8 +89,8 @@ export default function Footer() {
 
         {/* BOTTOM METADATA */}
         <div className="flex flex-col md:flex-row justify-between items-end border-t border-border-subtle pt-8 text-[10px] font-mono uppercase tracking-widest text-muted-foreground/40">
-            <p>Talormayde Atelier © {currentYear}</p>
-            <p>San Antonio, TX / Global</p>
+            <p>talormayde Atelier © {currentYear}</p>
+            <p>TX / Global</p>
         </div>
       </div>
     </footer>
