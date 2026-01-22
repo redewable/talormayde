@@ -339,20 +339,7 @@ export default function PackageModal({ tierName, onClose }: { tierName: string; 
             </div>
 
             {/* Navigation */}
-            <div className="p-5 pt-0 border-t border-border-subtle">
-              {/* Page Indicators */}
-              <div className="flex justify-center gap-2 mb-4">
-                {[0, 1, 2].map((page) => (
-                  <button
-                    key={page}
-                    onClick={() => setCurrentPage(page)}
-                    className={`w-2 h-2 rounded-full transition-all ${
-                      currentPage === page ? 'bg-foreground w-6' : 'bg-foreground/20'
-                    }`}
-                  />
-                ))}
-              </div>
-
+            <div className="p-5 pt-4 border-t border-border-subtle">
               {/* Nav Buttons */}
               <div className="flex gap-3">
                 <button

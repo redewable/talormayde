@@ -49,7 +49,7 @@ export default function Footer() {
                     </nav>
                 </div>
                 
-                {/* COL 2: NETWORK (5 Items - Vertically Stacked to Match Index) */}
+                {/* COL 2: NETWORK (5 Items - Vertically Stacked to Match Index)
                 <div className="space-y-8">
                     <h4 className="text-xs font-mono uppercase tracking-[0.2em] text-muted-foreground/60">Network</h4>
                     <div className="flex flex-col gap-4 text-muted-foreground">
@@ -70,6 +70,7 @@ export default function Footer() {
                         </Link>
                     </div>
                 </div>
+                */}
 
                 {/* COL 3: LEGAL (4 Items) */}
                 <div className="space-y-8">
