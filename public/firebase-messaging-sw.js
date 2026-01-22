@@ -3,14 +3,13 @@ importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js')
 importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
 
 firebase.initializeApp({
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_AUTH_DOMAIN",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_STORAGE_BUCKET",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "BK87tMUTvdvsEv3UY8Lx5OJ6_MvH6GhYdbwdcC70sXkEP3dNDEYJRnXfdBzWMBRRSboLijndKFxcnW0-2tMAq_M",
+  authDomain: "talormayde-legacy.firebaseapp.com",
+  projectId: "talormayde-legacy",
+  storageBucket: "talormayde-legacy.appspot.com",
+  messagingSenderId: "your-sender-id",
+  appId: "your-app-id"
 });
-
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
