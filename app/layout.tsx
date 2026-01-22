@@ -4,7 +4,7 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
-import GrainOverlay from "@/components/GrainOverlay";
+//* later import GrainOverlay from "@/components/GrainOverlay";
 import PageTransition from "@/components/PageTransition"; 
 
 const geistSans = Geist({
@@ -23,7 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           
-          {/* 1. Texture Layer (Always Top) */}
+          {/* 1. Texture Layer (Always Top) use later
           <div className="canvas-texture" aria-hidden="true" />
           <GrainOverlay />
 

@@ -47,8 +47,8 @@ export default function Home() {
             <div className="w-[1px] h-16 bg-gradient-to-b from-transparent via-border-subtle to-transparent mx-auto" />
             <h2 className="text-2xl md:text-3xl font-light leading-relaxed">
                 &quot;I am not a painter, so I paint.<br/>
-                I am not a coder, so I code.<br/>
-                We think, speak, and do <span className="border-b border-foreground/20 pb-1">outside of the box</span>.&quot;
+                I am not a coder, so I code.&quot;<br/>
+                We think, speak, and build <span className="border-b border-foreground/20 pb-1">outside of the box</span>.
             </h2>
         </div>
       </section>
