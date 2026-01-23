@@ -4,8 +4,8 @@ import "./globals.css";
 import NavBar from "@/components/NavBar";
 import Footer from "@/components/Footer";
 import { ThemeProvider } from "@/components/theme-provider";
-//* later import GrainOverlay from "@/components/GrainOverlay";
 import PageTransition from "@/components/PageTransition"; 
+import { usePathname } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,26 +25,25 @@ const cormorant = Cormorant_Garamond({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+  const isAdmin = pathname?.startsWith("/admin");
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} ${cormorant.variable} antialiased`}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           
-          {/* 1. Texture Layer (Always Top) use later
-          <div className="canvas-texture" aria-hidden="true" />
-          <GrainOverlay />
+          {/* Persistent Nav - Hidden on admin */}
+          {!isAdmin && <NavBar />}
 
-          {/* 2. Persistent Nav */}
-          <NavBar />
-
-          {/* 3. Main Content with Smooth Transition */}
+          {/* Main Content with Smooth Transition */}
           <div className="flex flex-col min-h-screen">
             <main className="flex-grow flex flex-col">
               <PageTransition>
                 {children}
               </PageTransition>
             </main>
-            <Footer />
+            {!isAdmin && <Footer />}
           </div>
 
         </ThemeProvider>
